@@ -1,5 +1,7 @@
 module RainMaker
 
-# Write your package code here.
+using SpeedyWeather
+
+include("rain_tracker.jl")
 
 end
