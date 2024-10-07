@@ -16,7 +16,7 @@ $(TYPEDFIELDS)"""
     """[OPTION] Longitude [0 to 360˚E] to track precipitation."""
     lond::Float64 = 0.0
 
-    """[OPTION] Grid point index to track precipitation."""
+    """[OPTION] To interpolate precipitation fields onto lond, latd."""
     interpolator::Interpolator
 
     # TIME
