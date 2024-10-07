@@ -22,3 +22,5 @@ the fields `tstart` and `Δt` are used but they will be automatically
 set when initialized given the time step in the model.
 At any time you can always `reset!(rain_tracker)` in order
 to reset counters, time and all rainfall measurements.
+But a `RainTracker` is also mutable, meaning you can do
+this by hand too, e.g. `rain_tracker.accumulated_rain_large_scale .= 0`.
