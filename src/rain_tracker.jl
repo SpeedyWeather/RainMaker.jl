@@ -70,12 +70,20 @@ function Base.show(io::IO, tracker::RainTracker{T}) where T
     print(io,   "└ accumulated total precipitation: $total_precip_str mm")
 end
 
+"""$(TYPEDSIGNATURES)
+Initialize `tracker::RainTracker` by calling `reset!(::RainTracker)` but only if
+`tracker` is not already initialized (`tracker.track_counter > 0`),
+so that it can be re-used across several simulation runs."""
 function SpeedyWeather.initialize!(tracker::RainTracker, args...)
     # skip initialization step if tracker already initialized
     tracker.track_counter > 0 && return nothing
     reset!(tracker, args...)
 end
 
+"""$(TYPEDSIGNATURES)
+Reset `tracker::RainTracker` to its initial state, i.e. set `track_counter` to 0,
+`tstart` to `DEFAULT_DATE`, `Δt` to `DEFAULT_ΔT`, and set accumulated precipitation
+vector to zeros."""
 function reset!(tracker::RainTracker)
     tracker.track_counter = 0
     RingGrids.update_locator!(tracker.interpolator, [tracker.latd], [tracker.lond])
@@ -86,6 +94,9 @@ function reset!(tracker::RainTracker)
     return tracker
 end
 
+"""$(TYPEDSIGNATURES)
+Reset `tracker::RainTracker` to its initial state, but use time and Δt from
+clock."""
 function reset!(
     tracker::RainTracker,
     progn::PrognosticVariables,
@@ -98,11 +109,16 @@ function reset!(
     return nothing
 end
 
+"""$(TYPEDSIGNATURES)
+Callback definition for `tracker::RainTracker` from `RainMaker.jl`.
+Interpolates large-scale and convective precipitation to the tracker's
+storage vectors and converts units from m to mm. Stops tracking if the
+`max_timesteps` are reached which is printed only once as info."""
 function SpeedyWeather.callback!(
-    tracker::RainTracker{NF},
+    tracker::RainTracker,
     progn::PrognosticVariables,
     diagn::DiagnosticVariables,
-    model::SpeedyWeather.AbstractModel) where NF
+    model::SpeedyWeather.AbstractModel)
 
     tracker.track_counter += 1      # always count up
 
@@ -110,7 +126,8 @@ function SpeedyWeather.callback!(
     tracker.track_counter > tracker.max_timesteps && return nothing
     i = tracker.track_counter
 
-    precip = zeros(NF, 1)
+    # interpolate! requires vector, allocate but reuse
+    precip = zeros(1)
     m2mm = 1000     # model uses meters internally, convert to mm
     RingGrids.interpolate!(precip, diagn.physics.precip_large_scale, tracker.interpolator)
     tracker.accumulated_rain_large_scale[i] = precip[1]*m2mm
@@ -120,6 +137,7 @@ function SpeedyWeather.callback!(
 
     # print info that max time steps is reached only once
     if tracker.track_counter == tracker.max_timesteps
+        print("\n")
         @info "tracker.max_timesteps = $(tracker.max_timesteps) reached, stopping tracker."
     end
 end
