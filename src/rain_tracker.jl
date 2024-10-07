@@ -90,7 +90,7 @@ function reset!(
     tracker::RainTracker,
     progn::PrognosticVariables,
     diagn::DiagnosticVariables,
-    model::AbstractModel)
+    model::SpeedyWeather.AbstractModel)
     
     reset!(tracker)
     tracker.tstart = progn.clock.time
@@ -102,7 +102,7 @@ function SpeedyWeather.callback!(
     tracker::RainTracker{NF},
     progn::PrognosticVariables,
     diagn::DiagnosticVariables,
-    model::AbstractModel) where NF
+    model::SpeedyWeather.AbstractModel) where NF
 
     tracker.track_counter += 1      # always count up
 
