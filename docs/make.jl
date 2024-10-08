@@ -33,8 +33,13 @@ open(joinpath(@__DIR__, "src/submissions.md"), "w") do mdfile
         println(mdfile, "## $name\n")
         println(mdfile, "path: /submissions/$name.jl\n")
         println(mdfile, "```@example $name")
+        println(mdfile, "using CairoMakie # hide")
         println(mdfile, dict["code"])
-        println(mdfile, "```\n")
+        println(mdfile, "RainMaker.plot(rain_gauge)")
+        println(mdfile, """save("submission_$name.png", ans)""")
+        println(mdfile, "nothing # hide")
+        println(mdfile, "```")
+        println(mdfile, "![submission: $name](submission_$name.png)\n")
     end
 end
 

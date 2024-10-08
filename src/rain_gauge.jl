@@ -2,7 +2,7 @@ const DEFAULT_DATE = Dates.DateTime(2000, 1, 1)
 const DEFAULT_ΔT = Dates.Minute(30)
 const DEFAULT_LOND = -1.25
 const DEFAULT_LATD = 51.75
-const DEFAULT_PERIOD = Dates.Day(30)
+const DEFAULT_PERIOD = Dates.Day(20)
 
 export RainGauge
 

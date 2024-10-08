@@ -12,4 +12,3 @@ code and RainMaker plots [Visualising RainGauge measurements](@ref).
 
 | Team | Description | Location | Total precipitation [mm] | Share convection [%] | Period [days] |
 | :--- | :---------- | :------- | -----------------------: | -------------------: | ------------: |
-| Test | Test        | 0˚N, 0˚E | 0                        | 100                  | 30            |
