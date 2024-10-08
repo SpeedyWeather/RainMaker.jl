@@ -1,5 +1,5 @@
-DEFAULT_DATE = DateTime(2000, 1, 1)
-DEFAULT_ΔT = Dates.Minute(30)
+const DEFAULT_DATE = DateTime(2000, 1, 1)
+const DEFAULT_ΔT = Dates.Minute(30)
 
 export RainGauge
 
