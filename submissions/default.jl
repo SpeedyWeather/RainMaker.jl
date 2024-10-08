@@ -1,4 +1,4 @@
-team_name = "Milan"
+author = "Milan"
 description = "default"
 
 using SpeedyWeather, RainMaker

@@ -10,17 +10,37 @@ DocMeta.setdocmeta!(RainMaker, :DocTestSetup, :(using RainMaker); recursive=true
 submissions = filter(x -> endswith(x, ".jl"), readdir(joinpath(@__DIR__, "../submissions")))
 sort!(submissions)  # alphabetical order
 
-submissions_dict = Dict{String, Dict}()
+# RUN SUBMISSIONS
+function run_submission(path::String)
+    include(path)   # actually run the submission
+
+    # analyse/evaluate
+    total_precip = maximum(rain_gauge.accumulated_rain_large_scale) + maximum(rain_gauge.accumulated_rain_convection)
+    submission_dict = Dict(
+
+        # for leaderboard
+        "name" => team_name,
+        "description" => description,
+        "location" => (rain_gauge.lond, rain_gauge.latd),
+        "total precipitation" => total_precip,
+        "convection share" => maximum(rain_gauge.accumulated_rain_convection) / total_precip,
+        "period" => rain_gauge.measurement_counter*rain_gauge.Δt,
+
+        # others
+        "path" => path,
+        "code" => read(path, String),
+        "author" => author,
+        "description" => description,
+    )
+    return submission_dict
+end
+
+all_submissions = Dict{String, Dict}()
 for submission in submissions
-    @info "Building submission $submission"
+    @info "Running submission $submission"
     name = split(submission, ".jl")[1]
     path = joinpath(@__DIR__, "..", "submissions", submission)
-    code = read(path, String)
-    submission_dict = Dict(
-        "path" => path,
-        "code" => code,
-    )
-    submissions_dict[name] = submission_dict
+    all_submissions[name] = run_submission(path)
 end
 
 # GENERATE SUBMISSIONS LIST
@@ -29,8 +49,10 @@ open(joinpath(@__DIR__, "src/submissions.md"), "w") do mdfile
     header = read(joinpath(@__DIR__, "headers/submissions_header.md"), String)
     println(mdfile, header)
 
-    for (name, dict) in submissions_dict
-        println(mdfile, "## $name\n")
+    for (name, dict) in all_submissions
+        author = dict["author"]
+        description = dict["description"]
+        println(mdfile, "## $author: $description\n")
         println(mdfile, "path: /submissions/$name.jl\n")
         println(mdfile, "```@example $name")
         println(mdfile, "using CairoMakie # hide")
@@ -43,41 +65,19 @@ open(joinpath(@__DIR__, "src/submissions.md"), "w") do mdfile
     end
 end
 
-# RUN SUBMISSIONS
-function run_submission(path::String)
-    
-    # run submission
-    include(path)
-
-    # analyse/evaluate
-    total_precip = maximum(rain_gauge.accumulated_rain_large_scale) + maximum(rain_gauge.accumulated_rain_convection)
-    eval_dict = Dict(
-        "name" => team_name,
-        "description" => description,
-        "location" => (rain_gauge.lond, rain_gauge.latd),
-        "total precipitation" => total_precip,
-        "convection share" => maximum(rain_gauge.accumulated_rain_convection) / total_precip,
-        "period" => rain_gauge.measurement_counter*rain_gauge.Δt,
-    )
-    return eval_dict
-end
-
-
 # GENERATE LEADERBOARD
 @info "Building leaderboard.md"
 open(joinpath(@__DIR__, "src/leaderboard.md"), "w") do mdfile
     header = read(joinpath(@__DIR__, "headers/leaderboard_header.md"), String)
     println(mdfile, header)
-    for (name, dict) in submissions_dict
-        eval_dict = run_submission(dict["path"])
-
-        name = eval_dict["name"]
-        description = eval_dict["description"]
-        loc = eval_dict["location"]
+    for (name, dict) in all_submissions
+        name = dict["name"]
+        description = dict["description"]
+        loc = dict["location"]
         location = Printf.@sprintf("%.2f˚N, %.2f˚E", loc[2], loc[1])
-        total_precip = Printf.@sprintf("%.3f", eval_dict["total precipitation"])
-        convection_share = Printf.@sprintf("%.1f", 100*eval_dict["convection share"])
-        n_days = Dates.Day(eval_dict["period"]).value
+        total_precip = Printf.@sprintf("%.3f", dict["total precipitation"])
+        convection_share = Printf.@sprintf("%.1f", 100*dict["convection share"])
+        n_days = Dates.Day(dict["period"]).value
 
         println(mdfile, "| $name | $description | $location | $total_precip | $convection_share | $n_days |")
     end
