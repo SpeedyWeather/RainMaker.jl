@@ -14,7 +14,7 @@ makedocs(;
     ),
     pages=[
         "Home" => "index.md",
-        "RainTracker" => "rain_tracker.md",
+        "RainGauge" => "rain_gauge.md",
     ],
 )
 
