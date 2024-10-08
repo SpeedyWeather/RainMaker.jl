@@ -43,7 +43,7 @@ which will produce a [Makie.jl](https://github.com/MakieOrg/Makie.jl) plot
 
 ![Rain gauge plot](https://speedyweather.github.io/RainMaker.jl/dev/rain_gauge.png)
 
-## Submitting to the RainMaker challenge
+## Submit to the RainMaker challenge
 
 Create a pull request with a julia script `file_name.jl` to be placed
 in the folder `/submissions`. After executing of this script there needs
