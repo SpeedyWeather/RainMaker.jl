@@ -6,7 +6,7 @@
 
 A repository for the atmospheric general circulation model
 [SpeedyWeather.jl](https://github.com/SpeedyWeather/SpeedyWeather.jl)
-to analyse and document precipitation at a given location.
+to measure and document precipitation at a given location.
 In particular, this repository contains functions and a documentation
 to show off and rank model setups that make it rain as much
 as possible at a certain location (e.g. UK) within a certain period.
@@ -14,7 +14,11 @@ New model setups can be submitted and are automatically evaluated
 and ranked in the documentation to create a leader board
 for the most successful *rainmaker*.
 
-## Analysing precipitation
+## Measuring precipitation with `RainGauge`
+
+RainMaker.jl exports `RainGauge` which is fully described
+in the [documentation](https://speedyweather.github.io/RainMaker.jl/dev/rain_gauge/).
+In short,
 
 ```julia
 using SpeedyWeather, RainMaker
@@ -35,10 +39,24 @@ run!(simulation, period=Day(30))
 RainMaker.plot(rain_gauge)
 ```
 
-## Submitting to the RainMaker challenge
+which will produce a [Makie.jl](https://github.com/MakieOrg/Makie.jl) plot
 
-...
+![Rain gauge plot](https://speedyweather.github.io/RainMaker.jl/dev/rain_gauge.png)
+
+## Submit to the RainMaker challenge
+
+Create a pull request with a julia script `file_name.jl` to be placed
+in the folder `/submissions`. After executing of this script there needs
+to be in the global scope of that script
+
+- a `rain_gauge::RainGauge` having measured precipitation of a SpeedyWeather.jl simulation
+- a `team_name::String`, e.g. `team_name = "Kermit the Frog"`
+- a `description::String` describing your model setup in a few words (<6 probably), e.g. `description = "3000m mountain in the atlantic"` or `"300K aqua planet without rotation"`.
+
+See [Rules](https://speedyweather.github.io/RainMaker.jl/dev/rain_gauge/)
+in the documentation for more details.
 
 ## Current leader board
 
-See the [documentation](https://speedyweather.github.io/RainMaker.jl/dev/).
+See [this section](https://speedyweather.github.io/RainMaker.jl/dev/)
+in the documentation.

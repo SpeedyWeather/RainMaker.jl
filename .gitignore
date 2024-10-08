@@ -47,3 +47,7 @@ default.profraw
 # vs code
 .vscode
 settings.json
+
+# automatically generated at build time
+docs/src/submissions.md
+docs/src/leaderboard.md
