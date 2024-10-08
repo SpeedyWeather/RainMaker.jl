@@ -6,6 +6,6 @@ using Dates
 using Printf
 using CairoMakie
 
-include("rain_tracker.jl")
+include("rain_gauge.jl")
 
 end

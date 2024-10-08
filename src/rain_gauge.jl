@@ -1,13 +1,13 @@
 DEFAULT_DATE = DateTime(2000, 1, 1)
 DEFAULT_ΔT = Dates.Minute(30)
 
-export RainTracker
+export RainGauge
 
 """Tracks convective and large-scale precipitation across time at
 one given location. No interpolation is applied, nearest grid point
 is chosen. Fields are 
 $(TYPEDFIELDS)"""
-@kwdef mutable struct RainTracker{NF, Interpolator} <: SpeedyWeather.AbstractCallback
+@kwdef mutable struct RainGauge{NF, Interpolator} <: SpeedyWeather.AbstractCallback
     
     # SPACE
     """[OPTION] Latitude [-90˚ to 90˚N] to track precipitation."""
@@ -26,7 +26,7 @@ $(TYPEDFIELDS)"""
     """[OPTION] Time step counter, starting at 0 for un-initialized."""
     track_counter::Int = 0
 
-    """Start time of tracker."""
+    """Start time of gauge."""
     tstart::Dates.DateTime = DEFAULT_DATE
 
     """Spacing between time steps."""
@@ -40,123 +40,123 @@ $(TYPEDFIELDS)"""
 end
 
 # use number format NF from spectral grid if not provided
-function RainTracker(SG::SpectralGrid; kwargs...)
+function RainGauge(SG::SpectralGrid; kwargs...)
     npoints = 1
     interpolator = RingGrids.DEFAULT_INTERPOLATOR(SG.NF, SG.Grid, SG.nlat_half, npoints)
-    RainTracker{SG.NF, typeof(interpolator)}(; interpolator, kwargs...)
+    RainGauge{SG.NF, typeof(interpolator)}(; interpolator, kwargs...)
 end
 
-function Base.show(io::IO, tracker::RainTracker{T}) where T
-    println(io, "$(typeof(tracker)) <: AbstractCallback")
-    println(io, "├ latd::Float64 = $(tracker.latd)˚N")
-    println(io, "├ lond::Float64 = $(tracker.lond)˚E")
+function Base.show(io::IO, gauge::RainGauge{T}) where T
+    println(io, "$(typeof(gauge)) <: AbstractCallback")
+    println(io, "├ latd::Float64 = $(gauge.latd)˚N")
+    println(io, "├ lond::Float64 = $(gauge.lond)˚E")
 
-    now = tracker.tstart + tracker.track_counter*tracker.Δt
+    now = gauge.tstart + gauge.track_counter*gauge.Δt
     now_str = Dates.format(now, "yyyy-mm-dd HH:MM:SS")
-    println(io, "├ track_counter:Int = $(tracker.track_counter)"*(tracker.track_counter == 0 ? " (uninitialized)" : " (now: $now_str)"))
-    println(io, "├ tstart::DateTime = $(tracker.tstart)")
-    println(io, "├ Δt::Second $(tracker.Δt)")
+    println(io, "├ track_counter:Int = $(gauge.track_counter)"*(gauge.track_counter == 0 ? " (uninitialized)" : " (now: $now_str)"))
+    println(io, "├ tstart::DateTime = $(gauge.tstart)")
+    println(io, "├ Δt::Second $(gauge.Δt)")
 
-    years = Dates.Second(tracker.Δt * tracker.max_timesteps).value / 3600 / 24 / 365
+    years = Dates.Second(gauge.Δt * gauge.max_timesteps).value / 3600 / 24 / 365
     years_str = Printf.@sprintf("%.1f", years)
-    percentage_passed = round(Int, 100*tracker.track_counter/tracker.max_timesteps)
-    println(io, "├ max_timesteps::Int = $(tracker.max_timesteps) (tracking for up to ~$years_str years, $percentage_passed% recorded)")
+    percentage_passed = round(Int, 100*gauge.track_counter/gauge.max_timesteps)
+    println(io, "├ max_timesteps::Int = $(gauge.max_timesteps) (tracking for up to ~$years_str years, $percentage_passed% recorded)")
 
-    println(io, "├ accumulated_rain_large_scale::Vector{$T}, maximum: $(maximum(tracker.accumulated_rain_large_scale)) mm")
-    println(io, "├ accumulated_rain_convective::Vector{$T}, maximum: $(maximum(tracker.accumulated_rain_convective)) mm")
+    println(io, "├ accumulated_rain_large_scale::Vector{$T}, maximum: $(maximum(gauge.accumulated_rain_large_scale)) mm")
+    println(io, "├ accumulated_rain_convective::Vector{$T}, maximum: $(maximum(gauge.accumulated_rain_convective)) mm")
     
-    total_precip = maximum(tracker.accumulated_rain_large_scale) + maximum(tracker.accumulated_rain_convective)
+    total_precip = maximum(gauge.accumulated_rain_large_scale) + maximum(gauge.accumulated_rain_convective)
     total_precip_str = Printf.@sprintf("%.3f", total_precip)
     print(io,   "└ accumulated total precipitation: $total_precip_str mm")
 end
 
 """$(TYPEDSIGNATURES)
-Initialize `tracker::RainTracker` by calling `reset!(::RainTracker)` but only if
-`tracker` is not already initialized (`tracker.track_counter > 0`),
+Initialize `gauge::RainGauge` by calling `reset!(::RainGauge)` but only if
+`gauge` is not already initialized (`gauge.track_counter > 0`),
 so that it can be re-used across several simulation runs."""
-function SpeedyWeather.initialize!(tracker::RainTracker, args...)
-    # skip initialization step if tracker already initialized
-    tracker.track_counter > 0 && return nothing
-    reset!(tracker, args...)
+function SpeedyWeather.initialize!(gauge::RainGauge, args...)
+    # skip initialization step if gauge already initialized
+    gauge.track_counter > 0 && return nothing
+    reset!(gauge, args...)
 end
 
 """$(TYPEDSIGNATURES)
-Reset `tracker::RainTracker` to its initial state, i.e. set `track_counter` to 0,
+Reset `gauge::RainGauge` to its initial state, i.e. set `track_counter` to 0,
 `tstart` to `DEFAULT_DATE`, `Δt` to `DEFAULT_ΔT`, and set accumulated precipitation
 vector to zeros."""
-function reset!(tracker::RainTracker)
-    tracker.track_counter = 0
-    RingGrids.update_locator!(tracker.interpolator, [tracker.latd], [tracker.lond])
-    tracker.tstart = DEFAULT_DATE
-    tracker.Δt = DEFAULT_ΔT
-    fill!(tracker.accumulated_rain_convective, 0)
-    fill!(tracker.accumulated_rain_large_scale, 0)
-    return tracker
+function reset!(gauge::RainGauge)
+    gauge.track_counter = 0
+    RingGrids.update_locator!(gauge.interpolator, [gauge.latd], [gauge.lond])
+    gauge.tstart = DEFAULT_DATE
+    gauge.Δt = DEFAULT_ΔT
+    fill!(gauge.accumulated_rain_convective, 0)
+    fill!(gauge.accumulated_rain_large_scale, 0)
+    return gauge
 end
 
 """$(TYPEDSIGNATURES)
-Reset `tracker::RainTracker` to its initial state, but use time and Δt from
+Reset `gauge::RainGauge` to its initial state, but use time and Δt from
 clock."""
 function reset!(
-    tracker::RainTracker,
+    gauge::RainGauge,
     progn::PrognosticVariables,
     diagn::DiagnosticVariables,
     model::SpeedyWeather.AbstractModel)
     
-    reset!(tracker)
-    tracker.tstart = progn.clock.time
-    tracker.Δt = progn.clock.Δt
+    reset!(gauge)
+    gauge.tstart = progn.clock.time
+    gauge.Δt = progn.clock.Δt
     return nothing
 end
 
 """$(TYPEDSIGNATURES)
-Callback definition for `tracker::RainTracker` from `RainMaker.jl`.
-Interpolates large-scale and convective precipitation to the tracker's
+Callback definition for `gauge::RainGauge` from `RainMaker.jl`.
+Interpolates large-scale and convective precipitation to the gauge's
 storage vectors and converts units from m to mm. Stops tracking if the
 `max_timesteps` are reached which is printed only once as info."""
 function SpeedyWeather.callback!(
-    tracker::RainTracker,
+    gauge::RainGauge,
     progn::PrognosticVariables,
     diagn::DiagnosticVariables,
     model::SpeedyWeather.AbstractModel)
 
-    tracker.track_counter += 1      # always count up
+    gauge.track_counter += 1      # always count up
 
     # but escape immediately if max time steps reached
-    tracker.track_counter > tracker.max_timesteps && return nothing
-    i = tracker.track_counter
+    gauge.track_counter > gauge.max_timesteps && return nothing
+    i = gauge.track_counter
 
     # interpolate! requires vector, allocate but reuse
     precip = zeros(1)
     m2mm = 1000     # model uses meters internally, convert to mm
-    RingGrids.interpolate!(precip, diagn.physics.precip_large_scale, tracker.interpolator)
-    tracker.accumulated_rain_large_scale[i] = precip[1]*m2mm
+    RingGrids.interpolate!(precip, diagn.physics.precip_large_scale, gauge.interpolator)
+    gauge.accumulated_rain_large_scale[i] = precip[1]*m2mm
 
-    RingGrids.interpolate!(precip, diagn.physics.precip_convection, tracker.interpolator)
-    tracker.accumulated_rain_convective[i] = precip[1]*m2mm
+    RingGrids.interpolate!(precip, diagn.physics.precip_convection, gauge.interpolator)
+    gauge.accumulated_rain_convective[i] = precip[1]*m2mm
 
     # print info that max time steps is reached only once
-    if tracker.track_counter == tracker.max_timesteps
+    if gauge.track_counter == gauge.max_timesteps
         print("\n")
-        @info "tracker.max_timesteps = $(tracker.max_timesteps) reached, stopping tracker."
+        @info "gauge.max_timesteps = $(gauge.max_timesteps) reached, stopping gauge."
     end
 end
 
 # nothing to finish
-SpeedyWeather.finish!(tracker::RainTracker, args...) = nothing
+SpeedyWeather.finish!(gauge::RainGauge, args...) = nothing
 
 """$(TYPEDSIGNATURES)
 Plot accumulated precipitation and precipitation rate across time for
-`tracker::RainTracker` from `RainMaker.jl`. `rate_Δt` specifies the interval
+`gauge::RainGauge` from `RainMaker.jl`. `rate_Δt` specifies the interval
 used to bin the precipitation rate, while units are always converted to
 mm/day. Default is 6 hours."""
 function plot(
-    tracker::RainTracker;
+    gauge::RainGauge;
     rate_Δt::Dates.Period = Dates.Hour(6))
 
     fig = Figure(size=(800, 400))
     ax1 = Axis(fig[1,1],
-        title="Precipitation at $(tracker.latd)˚N, $(tracker.lond)˚E",
+        title="Precipitation at $(gauge.latd)˚N, $(gauge.lond)˚E",
         titlealign=:left,
         ylabel="Accumulated [mm]")
 
@@ -166,12 +166,12 @@ function plot(
 
     linkxaxes!(ax1, ax2)
 
-    t = range(0, step=Dates.Second(tracker.Δt).value/3600/24, length=tracker.track_counter)
+    t = range(0, step=Dates.Second(gauge.Δt).value/3600/24, length=gauge.track_counter)
 
     # ACCUMULATED PRECIPITATION
     # range of recorded precipitation only
-    lsca = tracker.accumulated_rain_large_scale[1:tracker.track_counter]
-    conv = tracker.accumulated_rain_convective[1:tracker.track_counter]
+    lsca = gauge.accumulated_rain_large_scale[1:gauge.track_counter]
+    conv = gauge.accumulated_rain_convective[1:gauge.track_counter]
 
     # band/fillbetween plot, but stack them
     band!(ax1, t, 0, lsca, label="large-scale condensation", color=:skyblue, alpha=0.8)
@@ -184,10 +184,10 @@ function plot(
 
     # PRECIPITATION RATE
     # use every s-th value to reduce number of bars
-    s = round(Int, Dates.Second(rate_Δt).value / Dates.Second(tracker.Δt).value)
+    s = round(Int, Dates.Second(rate_Δt).value / Dates.Second(gauge.Δt).value)
     
     # convert from mm to mm/day
-    mm2mmday = Day(1)/(s*Dates.Second(tracker.Δt))
+    mm2mmday = Day(1)/(s*Dates.Second(gauge.Δt))
     lsca_rate = diff(vcat(0, lsca[s:s:end]))*mm2mmday
     conv_rate = diff(vcat(0, conv[s:s:end]))*mm2mmday
     t_rate = t[s:s:end]     # also subset time vector

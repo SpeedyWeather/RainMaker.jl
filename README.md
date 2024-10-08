@@ -23,16 +23,16 @@ using SpeedyWeather, RainMaker
 spectral_grid = SpectralGrid(trunc=31, nlayers=8)
 model = PrimitiveWetModel(;spectral_grid)
 
-# add the rain tracker as callback
-rain_tracker = RainTracker(spectral_grid, lond=-1.25, latd=51.75)
-add!(model.callbacks, rain_tracker)
+# add the rain gauge as callback
+rain_gauge = RainGauge(spectral_grid, lond=-1.25, latd=51.75)
+add!(model, rain_gauge)
 
 # run the simulation
 simulation = initialize!(model)
 run!(simulation, period=Day(30))
 
 # visualise 
-RainMaker.plot(rain_tracker)
+RainMaker.plot(rain_gauge)
 ```
 
 ## Submitting to the RainMaker challenge
