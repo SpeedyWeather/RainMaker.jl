@@ -19,7 +19,7 @@ function run_submission(path::String)
     submission_dict = Dict(
 
         # for leaderboard
-        "name" => team_name,
+        "author" => author,
         "description" => description,
         "location" => (rain_gauge.lond, rain_gauge.latd),
         "total precipitation" => total_precip,
