@@ -1,5 +1,8 @@
-const DEFAULT_DATE = DateTime(2000, 1, 1)
+const DEFAULT_DATE = Dates.DateTime(2000, 1, 1)
 const DEFAULT_ΔT = Dates.Minute(30)
+const DEFAULT_LOND = -1.25
+const DEFAULT_LATD = 51.75
+const DEFAULT_PERIOD = Dates.Day(30)
 
 export RainGauge
 
@@ -11,10 +14,10 @@ $(TYPEDFIELDS)"""
     
     # SPACE
     """[OPTION] Longitude [0 to 360˚E] where to measure precipitation."""
-    lond::Float64 = 0.0
+    lond::Float64 = DEFAULT_LOND
     
     """[OPTION] Latitude [-90˚ to 90˚N] where to measure precipitation."""
-    latd::Float64 = 0.0
+    latd::Float64 = DEFAULT_LATD
 
     """[OPTION] To interpolate precipitation fields onto lond, latd."""
     interpolator::Interpolator
@@ -23,7 +26,7 @@ $(TYPEDFIELDS)"""
     """[OPTION] Maximum number of time steps used to allocate memory."""
     max_measurements::Int = 100_000
 
-    """[OPTION] Measurement counter (one per time step), starting at 0 for un-initialized."""
+    """[OPTION] Measurement counter (one per time step), starting at 0 for uninitialized."""
     measurement_counter::Int = 0
 
     """Start time of gauge."""
