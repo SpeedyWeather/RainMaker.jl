@@ -105,3 +105,22 @@ save("rain_gauge.png", ans) # hide
 nothing # hide
 ```
 ![Rain gauge plot](rain_gauge.png)
+
+The `RainMaker.plot` functions takes as optional keyword argument
+`rate_Δt::Period` so that you can change the binwidth of the
+precipitation rate. Above we have one bin every 6 hours (the default), showing
+the average rate over the previous 6 hours. You can visualise
+the hourly precipitation rate with
+
+```@example rain_gauge
+RainMaker.plot(rain_gauge, rate_Δt=Hour(1))
+save("rain_gauge2.png", ans) # hide
+nothing # hide
+```
+![Rain gauge plot, hourly rate](rain_gauge2.png)
+
+which just gives you a more fine-grained picture. Arguments
+can be `Hour(::Real)`, `Minute(::Real)`, `Day(::Real)`
+but note that the default model time step at default resolution
+is 30min, so you do not get any more information when going
+lower than that.
