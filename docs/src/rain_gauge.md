@@ -124,3 +124,14 @@ can be `Hour(::Real)`, `Minute(::Real)`, `Day(::Real)`
 but note that the default model time step at default resolution
 is 30min, so you do not get any more information when going
 lower than that.
+
+## Functions and types
+
+```@index
+```
+
+```@autodocs
+Modules = [RainMaker]
+```
+
+
