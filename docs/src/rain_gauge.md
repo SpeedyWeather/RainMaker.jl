@@ -44,6 +44,8 @@ with
 ```@example rain_gauge
 simulation = initialize!(model)
 run!(simulation, period=Day(20))
+
+using CairoMakie # hide
 RainMaker.plot(rain_gauge)
 save("rain_gauge.png", ans) # hide
 nothing # hide
