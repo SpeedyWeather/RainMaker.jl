@@ -36,7 +36,7 @@ $(TYPEDFIELDS)"""
     accumulated_rain_large_scale::Vector{NF} = zeros(NF, max_measurements)
     
     """Accumulated convective precipitation [mm]."""
-    accumulated_rain_convective::Vector{NF} = zeros(NF, max_measurements)
+    accumulated_rain_convection::Vector{NF} = zeros(NF, max_measurements)
 end
 
 # use number format NF from spectral grid if not provided
@@ -63,9 +63,9 @@ function Base.show(io::IO, gauge::RainGauge{T}) where T
     println(io, "├ max_measurements::Int = $(gauge.max_measurements) (measuring for up to ~$years_str years, $percentage_passed% recorded)")
 
     println(io, "├ accumulated_rain_large_scale::Vector{$T}, maximum: $(maximum(gauge.accumulated_rain_large_scale)) mm")
-    println(io, "├ accumulated_rain_convective::Vector{$T}, maximum: $(maximum(gauge.accumulated_rain_convective)) mm")
+    println(io, "├ accumulated_rain_convection::Vector{$T}, maximum: $(maximum(gauge.accumulated_rain_convection)) mm")
     
-    total_precip = maximum(gauge.accumulated_rain_large_scale) + maximum(gauge.accumulated_rain_convective)
+    total_precip = maximum(gauge.accumulated_rain_large_scale) + maximum(gauge.accumulated_rain_convection)
     total_precip_str = Printf.@sprintf("%.3f", total_precip)
     print(io,   "└ accumulated total precipitation: $total_precip_str mm")
 end
@@ -89,7 +89,7 @@ function reset!(gauge::RainGauge)
     RingGrids.update_locator!(gauge.interpolator, [gauge.latd], [gauge.lond])
     gauge.tstart = DEFAULT_DATE
     gauge.Δt = DEFAULT_ΔT
-    fill!(gauge.accumulated_rain_convective, 0)
+    fill!(gauge.accumulated_rain_convection, 0)
     fill!(gauge.accumulated_rain_large_scale, 0)
     return gauge
 end
@@ -133,7 +133,7 @@ function SpeedyWeather.callback!(
     gauge.accumulated_rain_large_scale[i] = precip[1]*m2mm
 
     RingGrids.interpolate!(precip, diagn.physics.precip_convection, gauge.interpolator)
-    gauge.accumulated_rain_convective[i] = precip[1]*m2mm
+    gauge.accumulated_rain_convection[i] = precip[1]*m2mm
 
     # print info that max time steps is reached only once
     if gauge.measurement_counter == gauge.max_measurements
@@ -171,7 +171,7 @@ function plot(
     # ACCUMULATED PRECIPITATION
     # range of recorded precipitation only
     lsca = gauge.accumulated_rain_large_scale[1:gauge.measurement_counter]
-    conv = gauge.accumulated_rain_convective[1:gauge.measurement_counter]
+    conv = gauge.accumulated_rain_convection[1:gauge.measurement_counter]
 
     # band/fillbetween plot, but stack them
     band!(ax1, t, 0, lsca, label="large-scale condensation", color=:skyblue, alpha=0.8)

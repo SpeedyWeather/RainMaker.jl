@@ -31,7 +31,7 @@ But a `RainGauge` is also mutable, meaning you can do
 this by hand too, e.g. `rain_gauge.accumulated_rain_large_scale .= 0`.
 
 `RainGauge` has two vectors `accumulated_rain_large_scale` and
-`accumulated_rain_convective` where every entry is one measurement
+`accumulated_rain_convection` where every entry is one measurement
 of the given precipitation type at the specified location.
 One measurement is taken after every time step of the model simulation.
 In order to preallocate these vectors we use `max_measurements`
