@@ -7,7 +7,7 @@ using Dates
 DocMeta.setdocmeta!(RainMaker, :DocTestSetup, :(using RainMaker); recursive=true)
 
 # READ ALL SUBMISSIONS CODE
-submissions = filter(x -> endswith(x, ".jl"), joinpath(@__DIR__, "../submissions"))
+submissions = filter(x -> endswith(x, ".jl"), readdir(joinpath(@__DIR__, "../submissions")))
 sort!(submissions)  # alphabetical order
 
 submissions_dict = Dict{String, Dict}()
