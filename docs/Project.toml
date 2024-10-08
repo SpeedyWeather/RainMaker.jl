@@ -1,4 +1,5 @@
 [deps]
+CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 RainMaker = "ce1e5628-4095-449b-8858-623a1e420393"
 SpeedyWeather = "9e226e20-d153-4fed-8a5b-493def4f21a9"
