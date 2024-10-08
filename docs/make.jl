@@ -70,9 +70,9 @@ open(joinpath(@__DIR__, "src/leaderboard.md"), "w") do mdfile
         description = eval_dict["description"]
         loc = eval_dict["location"]
         location = Printf.@sprintf("%.2f˚N, %.2f˚E", loc[2], loc[1])
-        total_precip = Printf.@sprinft("%.3f", eval_dict["total precipitation"])
-        convection_share = Printf.@sprinft("%.1f", 100*eval_dict["convection share"])
-        n_days = Dates.Days(eval_dict["period"]).value
+        total_precip = Printf.@sprintf("%.3f", eval_dict["total precipitation"])
+        convection_share = Printf.@sprintf("%.1f", 100*eval_dict["convection share"])
+        n_days = Dates.Day(eval_dict["period"]).value
 
         println(mdfile, "| $name | $description | $location | $total_precip | $convection_share | $n_days |")
     end
