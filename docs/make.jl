@@ -35,8 +35,8 @@ all_submissions = Dict{String, Dict}()
 
 # for sorting
 nsubmissions = length(submissions)
-all_precip = zeros(n)
-all_names = Vector{String}(undef, n)
+all_precip = zeros(nsubmissions)
+all_names = Vector{String}(undef, nsubmissions)
 
 for (i, submission) in enumerate(submissions)
     @info "Running submission $submission"
