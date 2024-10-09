@@ -51,7 +51,7 @@ to be in the global scope of that script the following variables defined
 
 - a `rain_gauge::RainGauge` having measured precipitation of a SpeedyWeather.jl simulation
 - an `author::String`, e.g. `author = "Kermit the Frog"`
-- a `description::String` describing your model setup in a few words (<6 probably), e.g. `description = "3000m mountain in the atlantic"` or `"300K aquaplanet without rotation"`.
+- a `description::String` describing your model setup in a few words (<6 probably), e.g. `description = "3000m mountain in the atlantic"` or `"300K aquaplanet"`.
 
 See [Rules](https://speedyweather.github.io/RainMaker.jl/dev/submit/#Rules)
 in the documentation for more details.

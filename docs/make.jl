@@ -68,7 +68,7 @@ open(joinpath(@__DIR__, "src/submissions.md"), "w") do mdfile
         description = dict["description"]
         rank = dict["rank"]
         println(mdfile, "## $author: $description\n")
-        println(mdfile, "path: /submissions/$name.jl")
+        println(mdfile, "path: /submissions/$name.jl\n")
         println(mdfile, "rank: $rank. of $nsubmissions submissions\n")
         println(mdfile, "```@example $name")
         println(mdfile, "using CairoMakie # hide")
