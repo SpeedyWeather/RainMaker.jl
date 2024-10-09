@@ -46,17 +46,17 @@ which will produce a [Makie.jl](https://github.com/MakieOrg/Makie.jl) plot
 ## Submit to the RainMaker challenge
 
 Create a pull request with a julia script `file_name.jl` to be placed
-in the folder `/submissions`. After executing of this script there needs
-to be in the global scope of that script
+in the folder `/submissions`. After executing this script there needs
+to be in the global scope of that script the following variables defined
 
 - a `rain_gauge::RainGauge` having measured precipitation of a SpeedyWeather.jl simulation
-- a `team_name::String`, e.g. `team_name = "Kermit the Frog"`
-- a `description::String` describing your model setup in a few words (<6 probably), e.g. `description = "3000m mountain in the atlantic"` or `"300K aqua planet without rotation"`.
+- an `author::String`, e.g. `author = "Kermit the Frog"`
+- a `description::String` describing your model setup in a few words (<6 probably), e.g. `description = "3000m mountain in the atlantic"` or `"300K aquaplanet without rotation"`.
 
-See [Rules](https://speedyweather.github.io/RainMaker.jl/dev/rain_gauge/)
+See [Rules](https://speedyweather.github.io/RainMaker.jl/dev/submit/#Rules)
 in the documentation for more details.
 
 ## Current leader board
 
-See [this section](https://speedyweather.github.io/RainMaker.jl/dev/)
+See [the leaderboard](https://speedyweather.github.io/RainMaker.jl/dev/leaderboard/)
 in the documentation.

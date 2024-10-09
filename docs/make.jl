@@ -17,20 +17,14 @@ function run_submission(path::String)
     # analyse/evaluate
     total_precip = maximum(rain_gauge.accumulated_rain_large_scale) + maximum(rain_gauge.accumulated_rain_convection)
     submission_dict = Dict(
-
-        # for leaderboard
         "author" => author,
         "description" => description,
         "location" => (rain_gauge.lond, rain_gauge.latd),
         "total precipitation" => total_precip,
         "convection share" => maximum(rain_gauge.accumulated_rain_convection) / total_precip,
         "period" => rain_gauge.measurement_counter*rain_gauge.Δt,
-
-        # others
         "path" => path,
         "code" => read(path, String),
-        "author" => author,
-        "description" => description,
     )
     return submission_dict
 end
@@ -71,23 +65,15 @@ open(joinpath(@__DIR__, "src/leaderboard.md"), "w") do mdfile
     header = read(joinpath(@__DIR__, "headers/leaderboard_header.md"), String)
     println(mdfile, header)
     for (name, dict) in all_submissions
-        name = dict["name"]
         description = dict["description"]
         loc = dict["location"]
         location = Printf.@sprintf("%.2f˚N, %.2f˚E", loc[2], loc[1])
         total_precip = Printf.@sprintf("%.3f", dict["total precipitation"])
         convection_share = Printf.@sprintf("%.1f", 100*dict["convection share"])
         n_days = Dates.Day(dict["period"]).value
-
         println(mdfile, "| $name | $description | $location | $total_precip | $convection_share | $n_days |")
     end
 end
-
-rainmaker_challenge = [
-    "Submit" => "submit.md",
-    "Leaderboard" => "leaderboard.md",
-    "Submissions" => "submissions.md",
-]
 
 makedocs(;
     modules=[RainMaker],
@@ -101,7 +87,11 @@ makedocs(;
     pages=[
         "Home" => "index.md",
         "RainGauge" => "rain_gauge.md",
-        "RainMaker challenge" => rainmaker_challenge,
+        "RainMaker challenge" => [
+            "Submit" => "submit.md",
+            "Leaderboard" => "leaderboard.md",
+            "Submissions" => "submissions.md",
+        ],
     ],
 )
 
