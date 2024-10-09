@@ -15,7 +15,7 @@ Contents
 - [RainGauge](@ref), measuring precipitation inside a 
 - [Submit to the RainMaker challenge](@ref)
 - [RainMaker leaderboard](@ref)
-- [Submissions](@ref)
+- [List of submissions](@ref)
 
 ## Installation
 
