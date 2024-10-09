@@ -25,6 +25,7 @@ function run_submission(path::String)
         "period" => rain_gauge.measurement_counter*rain_gauge.Δt,
         "path" => path,
         "code" => read(path, String),
+        "rank" => 0,
     )
     return submission_dict
 end
@@ -43,16 +44,20 @@ open(joinpath(@__DIR__, "src/submissions.md"), "w") do mdfile
     header = read(joinpath(@__DIR__, "headers/submissions_header.md"), String)
     println(mdfile, header)
 
+    nsubmissions = length(all_submissions)
+
     for (name, dict) in all_submissions
         author = dict["author"]
         description = dict["description"]
+        rank = dict["rank"]
         println(mdfile, "## $author: $description\n")
-        println(mdfile, "path: /submissions/$name.jl\n")
+        println(mdfile, "path: /submissions/$name.jl")
+        println(mdfile, "rank: $rank. of $nsubmissions submissions\n")
         println(mdfile, "```@example $name")
         println(mdfile, "using CairoMakie # hide")
         println(mdfile, dict["code"])
-        println(mdfile, "RainMaker.plot(rain_gauge)")
-        println(mdfile, """save("submission_$name.png", ans)""")
+        println(mdfile, "RainMaker.plot(rain_gauge) # hide")
+        println(mdfile, """save("submission_$name.png", ans) # hide""")
         println(mdfile, "nothing # hide")
         println(mdfile, "```")
         println(mdfile, "![submission: $name](submission_$name.png)\n")
@@ -65,13 +70,15 @@ open(joinpath(@__DIR__, "src/leaderboard.md"), "w") do mdfile
     header = read(joinpath(@__DIR__, "headers/leaderboard_header.md"), String)
     println(mdfile, header)
     for (name, dict) in all_submissions
+        author = dict["author"]
         description = dict["description"]
+        rank = dict["rank"]
         loc = dict["location"]
         location = Printf.@sprintf("%.2f˚N, %.2f˚E", loc[2], loc[1])
         total_precip = Printf.@sprintf("%.3f", dict["total precipitation"])
         convection_share = Printf.@sprintf("%.1f", 100*dict["convection share"])
         n_days = Dates.Day(dict["period"]).value
-        println(mdfile, "| $name | $description | $location | $total_precip | $convection_share | $n_days |")
+        println(mdfile, "| $rank | $author | $description | $location | $total_precip | $convection_share | $n_days |")
     end
 end
 
@@ -90,7 +97,7 @@ makedocs(;
         "RainMaker challenge" => [
             "Submit" => "submit.md",
             "Leaderboard" => "leaderboard.md",
-            "Submissions" => "submissions.md",
+            "List of submissions" => "submissions.md",
         ],
     ],
 )

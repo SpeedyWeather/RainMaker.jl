@@ -10,5 +10,5 @@ code and RainMaker plots [Visualising RainGauge measurements](@ref).
 
 ## Leaderboard
 
-| Team | Description | Location | Total precipitation [mm] | Share convection [%] | Period [days] |
-| :--- | :---------- | :------- | -----------------------: | -------------------: | ------------: |
+| Rank | Author | Description | Location | Total precipitation [mm] | Share convection [%] | Period [days] |
+| :--- | :----- | :---------- | :------- | -----------------------: | -------------------: | ------------: |
