@@ -33,7 +33,7 @@ add!(model, rain_gauge)
 
 # run the simulation
 simulation = initialize!(model)
-run!(simulation, period=Day(30))
+run!(simulation, period=Day(20))
 
 # visualise 
 RainMaker.plot(rain_gauge)
@@ -53,7 +53,9 @@ to be in the global scope of that script the following variables defined
 - an `author::String`, e.g. `author = "Kermit the Frog"`
 - a `description::String` describing your model setup in a few words (<6 probably), e.g. `description = "3000m mountain in the atlantic"` or `"300K aquaplanet"`.
 
-See [Rules](https://speedyweather.github.io/RainMaker.jl/dev/submit/#Rules)
+See 
+[Submit to the RainMaker challenge](https://speedyweather.github.io/RainMaker.jl/dev/submit/#Submit-to-the-RainMaker-challenge)
+and [Rules](https://speedyweather.github.io/RainMaker.jl/dev/submit/#Rules)
 in the documentation for more details.
 
 ## Current leader board
