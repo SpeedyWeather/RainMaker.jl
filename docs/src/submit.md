@@ -25,6 +25,5 @@ the [Leaderboard](@ref).
 ## Rules
 
 1. All precipitation measured by the rain gauge has to be simulated by SpeedyWeather.
-2. No changes to the following physics inside SpeedyWeather:
-Large-scale condensation, convection, surface evaporation, or radiation.
+2. No changes to the following physics inside SpeedyWeather: Large-scale condensation, convection, surface evaporation, or radiation.
 3. Sea and land surface temperatures cannot exceed 305K anywhere during the simulation.
