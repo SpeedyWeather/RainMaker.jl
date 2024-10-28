@@ -145,8 +145,8 @@ function SpeedyWeather.callback!(
     end
 end
 
-# nothing to finish
-SpeedyWeather.finish!(gauge::RainGauge, args...) = nothing
+# nothing to finalize
+SpeedyWeather.finalize!(gauge::RainGauge, args...) = nothing
 
 """$(TYPEDSIGNATURES)
 Plot accumulated precipitation and precipitation rate across time for

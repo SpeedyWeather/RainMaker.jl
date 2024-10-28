@@ -10,7 +10,6 @@ ocean = AquaPlanet(spectral_grid, temp_equator=302, temp_poles=273)
 land_sea_mask = AquaPlanetMask(spectral_grid)
 orography = NoOrography(spectral_grid)
 model = PrimitiveWetModel(; spectral_grid, ocean, land_sea_mask, orography)
-model.feedback.verbose = false # hide
 
 rain_gauge = RainGauge(spectral_grid, lond=-1.25, latd=51.75)
 add!(model, rain_gauge)
