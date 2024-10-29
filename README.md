@@ -25,7 +25,7 @@ using SpeedyWeather, RainMaker
 
 # create a model
 spectral_grid = SpectralGrid(trunc=31, nlayers=8)
-model = PrimitiveWetModel(;spectral_grid)
+model = PrimitiveWetModel(spectral_grid)
 
 # add the rain gauge as callback
 rain_gauge = RainGauge(spectral_grid, lond=-1.25, latd=51.75)
@@ -45,8 +45,8 @@ which will produce a [Makie.jl](https://github.com/MakieOrg/Makie.jl) plot
 
 ## Submit to the RainMaker challenge
 
-Create a pull request with a julia script `file_name.jl` to be placed
-in the folder `/submissions`. After executing this script there needs
+Create a pull request with a julia script `some_file_name.jl` to be placed
+in the folder `/submissions`. After execution, there needs
 to be in the global scope of that script the following variables defined
 
 - a `rain_gauge::RainGauge` having measured precipitation of a SpeedyWeather.jl simulation
