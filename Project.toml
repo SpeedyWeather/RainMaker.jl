@@ -14,7 +14,7 @@ SpeedyWeather = "9e226e20-d153-4fed-8a5b-493def4f21a9"
 CairoMakie = "0.12"
 DocStringExtensions = "0.9"
 SpeedyWeather = "0.12"
-julia = "1.9"
+julia = "1.10"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
