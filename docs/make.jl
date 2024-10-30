@@ -123,6 +123,7 @@ makedocs(;
     ),
     pages=[
         "Home" => "index.md",
+        "New to Julia?" => "new_to_julia.md",
         "RainGauge" => "rain_gauge.md",
         "RainMaker challenge" => [
             "Submit" => "submit.md",

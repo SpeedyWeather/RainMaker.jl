@@ -12,7 +12,8 @@ a repository to measure precipitation inside a
 Contents
 
 - [Installation](@ref)
-- [RainGauge](@ref), measuring precipitation inside a 
+- [New to Julia?](@ref)
+- [RainGauge](@ref)
 - [Submit to the RainMaker challenge](@ref)
 - [RainMaker leaderboard](@ref)
 - [List of submissions](@ref)
@@ -41,17 +42,18 @@ on (among others)
 - [Makie.jl](https://github.com/MakieOrg/Makie.jl) and its backend [CairoMakie](https://docs.makie.org/stable/explanations/backends/cairomakie) for plotting
 
 While they are automatically installed, you will also want to install
-SpeedyWeather explicitly so that 
+SpeedyWeather explicitly via
+
+```julia
+julia> ] add SpeedyWeather
+```
+
+or, again, `using Pkg; Pkg.add("SpeedyWeather")`. So that 
 
 ```julia
 using SpeedyWeather
 ```
 
 also just works as dependencies are otherwise hidden for direct usage.
-Installation via
 
-```julia
-julia> ] add SpeedyWeather
-```
 
-or, again, `using Pkg; Pkg.add("SpeedyWeather")`.
