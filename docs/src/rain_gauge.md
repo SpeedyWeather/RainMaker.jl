@@ -10,7 +10,7 @@ With a `SpectralGrid` from
 you can create `RainGauge` (it needs to know the spectral grid to interpolate
 from gridded fields to a given location). In most cases you
 will probably want to specify the rain gauge's location
-with `lond` (0...360˚E) and `latd` (-90...90˚N)`
+with `lond` (0...360˚E, -180...180˚E also work) and `latd` (-90...90˚N)`
 
 ```@example rain_gauge
 using SpeedyWeather, RainMaker
@@ -166,7 +166,7 @@ and large-scale precipitation which we can calculate and visualise like this
 # a = struct.a and b = struct.b
 (; precip_large_scale, precip_convection) = simulation.diagnostic_variables.physics
 total_precipitation = precip_large_scale + precip_convection
-total_precipitation /= 1000    # convert m to mm
+total_precipitation *= 1000    # convert m to mm
 
 using CairoMakie
 heatmap(total_precipitation, title="Total precipitation [mm], accumulated")
@@ -182,9 +182,10 @@ continue across several `run!` calls unless you manually set it back via
 ```@example rain_gauge
 simulation.diagnostic_variables.physics.precip_large_scale .= 0
 simulation.diagnostic_variables.physics.precip_convection .= 0
+nothing # hide
 ```
 The `.` here is important to specify the broadcasting of the scalar `0` on the right
-to the array on the left.
+to the array on the left. This was not needed in `*= 1000` above as scalar times vector/matrix is mathematicall already well defined.
 
 ## Discarding spin-up
 
@@ -200,17 +201,17 @@ of a simulation. Let us illustrate this
 model = PrimitiveWetModel(spectral_grid)
 
 # add one rain gauge the measures the whole simulation
-rain_gauge_from_beginning  = RainGauge(spectral_grid, lond=358.75, latd=51.75)
+rain_gauge_from_beginning  = RainGauge(spectral_grid, lond=-1.25, latd=51.75)
 add!(model, rain_gauge_from_beginning)
 
 simulation = initialize!(model)
-run!(simulation, period=Day(5))
+run!(simulation, period=Week(1))
 
 # add another rain gauge that only starts measuring
-# after those 5 days we already simulated
-rain_gauge_after_spinup  = RainGauge(spectral_grid, lond=358.75, latd=51.75)
+# after that week we already simulated
+rain_gauge_after_spinup  = RainGauge(spectral_grid, lond=-1.25, latd=51.75)
 add!(model, rain_gauge_after_spinup)
-run!(simulation, period=Day(5))
+run!(simulation, period=Day(10))
 
 # now compare them, from the beginning
 rain_gauge_from_beginning
@@ -219,7 +220,7 @@ rain_gauge_from_beginning
 versus
 
 ```@example rain_gauge
-# rain gauge after a 5-day spinup
+# rain gauge after a 1-week spinup
 rain_gauge_after_spinup
 ```
 
