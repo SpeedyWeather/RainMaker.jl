@@ -63,21 +63,28 @@ open(joinpath(@__DIR__, "src/submissions.md"), "w") do mdfile
 
     nsubmissions = length(all_submissions)
 
-    for (name, dict) in all_submissions
-        author = dict["author"]
-        description = dict["description"]
-        rank = dict["rank"]
-        println(mdfile, "## $author: $description\n")
-        println(mdfile, "path: /submissions/$name.jl\n")
-        println(mdfile, "rank: $rank. of $nsubmissions submissions\n")
-        println(mdfile, "```@example $name")
-        println(mdfile, "using CairoMakie # hide")
-        println(mdfile, dict["code"])
-        println(mdfile, "RainMaker.plot(rain_gauge) # hide")
-        println(mdfile, """save("submission_$name.png", ans) # hide""")
-        println(mdfile, "nothing # hide")
-        println(mdfile, "```")
-        println(mdfile, "![submission: $name](submission_$name.png)\n")
+    # instead of sorting the dictionary, we iterate over the ranks
+    for i in 1:nsubmissions
+        # then find the submission with the given rank
+        for (name, dict) in all_submissions
+            rank = dict["rank"]
+            if rank == i
+                author = dict["author"]
+                description = dict["description"]
+                rank = dict["rank"]
+                println(mdfile, "## $author: $description\n")
+                println(mdfile, "path: `/submissions/$name.jl`\n")
+                println(mdfile, "rank: $rank. of $nsubmissions submissions\n")
+                println(mdfile, "```@example $name")
+                println(mdfile, "using CairoMakie # hide")
+                println(mdfile, dict["code"])
+                println(mdfile, "RainMaker.plot(rain_gauge) # hide")
+                println(mdfile, """save("submission_$name.png", ans) # hide""")
+                println(mdfile, "nothing # hide")
+                println(mdfile, "```")
+                println(mdfile, "![submission: $name](submission_$name.png)\n")
+            end
+        end
     end
 end
 
