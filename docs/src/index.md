@@ -6,7 +6,7 @@ CurrentModule = RainMaker
 
 Documentation for [RainMaker](https://github.com/SpeedyWeather/RainMaker.jl),
 a repository to measure precipitation inside a
-[SpeedyWeather.jl](https://github.com/SpeedyWeather/SpeedyWeather.jl) simulation
+[SpeedyWeather.jl](https://github.com/SpeedyWeather/SpeedyWeather.jl) simulation.
 
 
 Contents
@@ -40,17 +40,18 @@ on (among others)
 - [SpeedyWeather.jl](https://github.com/SpeedyWeather/SpeedyWeather.jl)
 - [Makie.jl](https://github.com/MakieOrg/Makie.jl) and its backend [CairoMakie](https://docs.makie.org/stable/explanations/backends/cairomakie) for plotting
 
-while they are automatically installed to be used *within* RainMaker.jl,
-for many examples you will need to import them explicitly, i.e.
+While they are automatically installed, you will also want to install
+SpeedyWeather explicitly so that 
 
 ```julia
-using SpeedyWeather, CairoMakie
+using SpeedyWeather
 ```
 
-so it is advised to also install them (so they are not just a dependency) via
+also just works as dependencies are otherwise hidden for direct usage.
+Installation via
 
 ```julia
-julia> ] add SpeedyWeather, CairoMakie
+julia> ] add SpeedyWeather
 ```
 
-or, again, `using Pkg; Pkg.add(["SpeedyWeather", "CairoMakie"])`.
+or, again, `using Pkg; Pkg.add("SpeedyWeather")`.
