@@ -61,8 +61,6 @@ open(joinpath(@__DIR__, "src/submissions.md"), "w") do mdfile
     header = read(joinpath(@__DIR__, "headers/submissions_header.md"), String)
     println(mdfile, header)
 
-    nsubmissions = length(all_submissions)
-
     # instead of sorting the dictionary, we iterate over the ranks
     for i in 1:nsubmissions
         # then find the submission with the given rank
@@ -125,6 +123,7 @@ makedocs(;
     ),
     pages=[
         "Home" => "index.md",
+        "New to Julia?" => "new_to_julia.md",
         "RainGauge" => "rain_gauge.md",
         "RainMaker challenge" => [
             "Submit" => "submit.md",

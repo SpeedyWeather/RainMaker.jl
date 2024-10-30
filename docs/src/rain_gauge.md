@@ -10,7 +10,7 @@ With a `SpectralGrid` from
 you can create `RainGauge` (it needs to know the spectral grid to interpolate
 from gridded fields to a given location). In most cases you
 will probably want to specify the rain gauge's location
-with `lond` (0...360˚E) and `latd` (-90...90˚N)`
+with `lond` (0...360˚E, -180...180˚E also work) and `latd` (-90...90˚N)`
 
 ```@example rain_gauge
 using SpeedyWeather, RainMaker
@@ -47,10 +47,21 @@ argument, e.g. `RainGauge(spectral_grid, max_measurements=1_000_000)`
 ## Adding RainGauge as callback
 
 The `RainGauge` is implemented as a `<: SpeedyWeather.AbstractCallback`
-so that it can be added to a model with `add!`
+(`<:` means "subtype of"). A
+[Callback](https://speedyweather.github.io/SpeedyWeather.jl/dev/callbacks/#Callbacks)
+is an object (technically a `struct` introducing a new type that belongs to the
+supertype `AbstractCallback`) with methods defined that are executed after
+every time step of the model. A callback therefore allows you to inject any piece
+of code into a simulation. Many callbacks are "diagnostic" meaning they just read
+out variables but you could also define "intrusive" callbacks
+that change the model or the simulation while it is running
+(not covered here but see
+[Intrusive callbacks](https://speedyweather.github.io/SpeedyWeather.jl/dev/callbacks/#intrusive_callbacks)).
+
+A `RainGauge` can be added to a model with `add!`
 
 ```@example rain_gauge
-model = PrimitiveWetModel(;spectral_grid)
+model = PrimitiveWetModel(spectral_grid)
 add!(model, rain_gauge)
 ```
 
@@ -62,6 +73,18 @@ several independent `RainGauge`s for that, adding the same
 `RainGauge` several times to the model is unlikely what
 you will want to do (it will measure several times the same
 precipitation after each time step).
+
+You can also `delete!` a `RainGauge` (or any callback) again,
+but you need to know its key for that which is printed to screen
+when added or just inspect
+
+```@example rain_gauge
+model.callbacks
+```
+
+then with `delete!(model.callbacks, :callback_????)` where `:callback_????`
+is a [Symbol](https://docs.julialang.org/en/v1/manual/metaprogramming/#Symbols)
+(an immutable string) identifying the callback you want to delete.
 
 ## Continuous measurements across simulations
 
@@ -124,6 +147,85 @@ can be `Hour(::Real)`, `Minute(::Real)`, `Day(::Real)`
 but note that the default model time step at default resolution
 is 30min, so you do not get any more information when going
 lower than that.
+
+## Visualising accumulated rainfall globally
+
+SpeedyWeather simulations diagnose the _accumulated_ rainfall internally.
+Which is actually what a `RainGauge` reads out on every time step at
+the specified location (but see details in [Discarding spin-up](@ref)).
+This means you can also visualise a map of the accumulated rainfall since the
+beginning of the simulation to better understand regional rainfall patterns.
+SpeedyWeather uses largely SI units internally, but `RainGauge` converts
+meters to millimeters because that is the more common unit for rainfall.
+If we read out SpeedyWeather's fields manually we therefore have to do
+this conversion manually too. Total precipitation is the sum of convective
+and large-scale precipitation which we can calculate and visualise like this
+
+```@example rain_gauge
+# (; a, b) = struct unpacks the fields a, b in struct identified by name, equivalent to
+# a = struct.a and b = struct.b
+(; precip_large_scale, precip_convection) = simulation.diagnostic_variables.physics
+total_precipitation = precip_large_scale + precip_convection
+total_precipitation *= 1000    # convert m to mm
+
+using CairoMakie
+heatmap(total_precipitation, title="Total precipitation [mm], accumulated")
+save("total_precip_map.png", ans) # hide
+nothing # hide
+```
+![Map of total accumulated precipitation](total_precip_map.png)
+
+You can also visualise these fields individually. The accumulation starts when
+the model is initialized with `simulation = initialize!(model)` which constructs
+variables, initialized with zeros, too. This means the accumulation will
+continue across several `run!` calls unless you manually set it back via
+```@example rain_gauge
+simulation.diagnostic_variables.physics.precip_large_scale .= 0
+simulation.diagnostic_variables.physics.precip_convection .= 0
+nothing # hide
+```
+The `.` here is important to specify the broadcasting of the scalar `0` on the right
+to the array on the left. This was not needed in `*= 1000` above as scalar times vector/matrix is mathematicall already well defined.
+
+## Discarding spin-up
+
+A `RainGauge` starts measuring accumulated rainfall relative to the
+first `run!(simulation)` call after it has been added to the model with
+`add!`, see [Adding RainGauge as callback](@ref). This means that
+you can run a simulation without a `RainGauge` and then only start
+measuring precipitation after some time has passed. You
+can use this to discard any spin-up ( = adjustment after initial conditions)
+of a simulation. Let us illustrate this
+
+```@example rain_gauge
+model = PrimitiveWetModel(spectral_grid)
+
+# add one rain gauge the measures the whole simulation
+rain_gauge_from_beginning  = RainGauge(spectral_grid, lond=-1.25, latd=51.75)
+add!(model, rain_gauge_from_beginning)
+
+simulation = initialize!(model)
+run!(simulation, period=Week(1))
+
+# add another rain gauge that only starts measuring
+# after that week we already simulated
+rain_gauge_after_spinup  = RainGauge(spectral_grid, lond=-1.25, latd=51.75)
+add!(model, rain_gauge_after_spinup)
+run!(simulation, period=Day(10))
+
+# now compare them, from the beginning
+rain_gauge_from_beginning
+```
+
+versus
+
+```@example rain_gauge
+# rain gauge after a 1-week spinup
+rain_gauge_after_spinup
+```
+
+As you can see their clocks differ and so does the measured precipitation!
+
 
 ## Functions and types
 
