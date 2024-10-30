@@ -35,6 +35,12 @@ $(TYPEDFIELDS)"""
     """Spacing between time steps."""
     Δt::Dates.Second = DEFAULT_ΔT
 
+    """Accumulated large-scale precipitation [mm] in the simulation at the beginning of rain gauge measurements."""
+    accumulated_rain_large_scale_start::NF = 0
+
+    """Accumulated large-scale precipitation [mm] in the simulation at the beginning of rain gauge measurements."""
+    accumulated_rain_convection_start::NF = 0
+
     """Accumulated large-scale precipitation [mm]."""
     accumulated_rain_large_scale::Vector{NF} = zeros(NF, max_measurements)
     
@@ -109,6 +115,14 @@ function reset!(
     reset!(gauge)
     gauge.tstart = progn.clock.time
     gauge.Δt = progn.clock.Δt
+
+    p0 = zeros(1)
+    RingGrids.interpolate!(p0, diagn.physics.precip_large_scale, gauge.interpolator)
+    gauge.accumulated_rain_large_scale_start = p0[1]
+
+    RingGrids.interpolate!(p0, diagn.physics.precip_convection, gauge.interpolator)
+    gauge.accumulated_rain_convection_start = p0[1]
+
     return nothing
 end
 
@@ -129,14 +143,18 @@ function SpeedyWeather.callback!(
     gauge.measurement_counter > gauge.max_measurements && return nothing
     i = gauge.measurement_counter
 
+    # rain gauge measurements are relative to amount of precipitation at initial conditions
+    precip_lsc_0 = gauge.accumulated_rain_large_scale_start
+    precip_conv_0 = gauge.accumulated_rain_convection_start
+
     # interpolate! requires vector, allocate but reuse
     precip = zeros(1)
     m2mm = 1000     # model uses meters internally, convert to mm
     RingGrids.interpolate!(precip, diagn.physics.precip_large_scale, gauge.interpolator)
-    gauge.accumulated_rain_large_scale[i] = precip[1]*m2mm
+    gauge.accumulated_rain_large_scale[i] = (precip[1] - precip_lsc_0)*m2mm
 
     RingGrids.interpolate!(precip, diagn.physics.precip_convection, gauge.interpolator)
-    gauge.accumulated_rain_convection[i] = precip[1]*m2mm
+    gauge.accumulated_rain_convection[i] = (precip[1] - precip_conv_0)*m2mm
 
     # print info that max time steps is reached only once
     if gauge.measurement_counter == gauge.max_measurements
