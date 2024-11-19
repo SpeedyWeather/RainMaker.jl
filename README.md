@@ -42,6 +42,13 @@ which will produce a [Makie.jl](https://github.com/MakieOrg/Makie.jl) plot
 
 ![Rain gauge plot](https://speedyweather.github.io/RainMaker.jl/dev/rain_gauge.png)
 
+## The RainMaker challenge
+
+New to SpeedyWeather? Read the [instructions](https://speedyweather.github.io/RainMaker.jl/dev/instructions/)
+to know which knobs you could change in SpeedyWeather in order to make it rain more or less.
+While the most successful rainmaker probably requires a combination of several knobs this
+is a good starting point.
+
 ## Submit to the RainMaker challenge
 
 Create a pull request with a julia script `some_file_name.jl` to be placed
