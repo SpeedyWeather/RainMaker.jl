@@ -91,13 +91,23 @@ The time step of SpeedyWeather is controlled through the time stepping method of
 needs to know the spatial resolution to pick a time step by default that is stable, but you can still control this.
 SpeedyWeather's time integration is based on the `Leapfrog` scheme, so you create such a component like this
 
-```julia
+```@example instructions
 time_stepping = Leapfrog(spectral_grid, Δt_at_T31=Minute(20))
 ```
 
 where the argument `Δt_at_T31` determines the timestep `Δt` (write `\Delta` then hit tab) relative to a truncation of
 31 (called T31), the actual time step is then in `Δt_sec`, scaled linearly from T31 to whatever resolution you chose.
 You can provide any `Second`, `Minute`, `Hour` (but note that there is a stability limit above which your simulation quickly blows up).
+But do not forget to also pass this component to the model constructor, i.e.
+
+```@example instructions
+model = PrimitiveWetModel(spectral_grid; time_stepping)
+nothing # hide
+```
+
+where `; time_stepping` matches a keyword argument `time_stepping` with the variable of the same name. This is equivalent
+to `, time_stepping=time_stepping`.
+
 
 - How large a time step can you choose for a T31 resolution?
 - How does the speed or simulation time change with a changed time step?
@@ -108,7 +118,23 @@ Bonus question
 
 ## Change the season
 
+Some boundary conditions of SpeedyWeather depend by default on the time of the year, these are
 
+- sea and land surface temperatures
+- soil moisture
+
+changing the start time of your simulation therefore will have an impact on precipitation.
+At the moment no boundary conditions change with the year.
+You can change this start time when the model is initialized, i.e.
+
+```@example instructions
+simulation = initialize!(model, time=DateTime(2000, 8, 1))
+simulation.prognostic_variables.clock
+```
+
+With the last line you can inspect the `clock` object that keeps track of time.
+
+- Why would precipitation be higher or lower in different seasons?
 
 ## Change the orography
 
