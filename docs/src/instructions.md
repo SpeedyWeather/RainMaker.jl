@@ -10,6 +10,8 @@ There's more information in the [SpeedyWeather documentation](https://speedyweat
 but in short there are 4 steps
 
 ```julia
+using SpeedyWeather
+
 # 1. define the resolution
 spectral_grid = SpectralGrid(trunc=31, nlayers=8)
 
@@ -30,11 +32,112 @@ that is up to you to figure out.
 
 ## Change the resolution
 
+SpeedyWeather is a spectral model. That means it internally represents its variables
+as coefficients of horizontal waves on the sphere (the [_spherical harmonics_](https://en.wikipedia.org/wiki/Spherical_harmonics))
+up to a certain maximum wavenumber that is usually referred to as _truncation_.
+So for a truncation of 31, SpeedyWeather would resolve wavenumbers 0 to 31,
+but not 32 and larger. The higher the truncation the higher the resolution 
+and automatically chosen higher resolution of the grid. You control the resolution
+through the keyword argument `trunc` of the `SpectralGrid` object that defines
+the resolution of a simulation
+
+```@example instructions
+using SpeedyWeather
+spectral_grid =  SpectralGrid(trunc=42)
+```
+
+Now change `trunc` (e.g. 31, 42, 63, 85, 127) and check what happens to
+precipitation when you run a simulation at that resolution. You can also change
+the number of vertical layers with the keyword argument `nlayers`, e.g.
+
+```@example instructions
+spectral_grid =  SpectralGrid(trunc=31, nlayers=5)
+```
+
+Try to find out more generally, with changing `trunc` and `nlayers`
+
+- How does the grid spacing change?
+- How does the speed of the simulation change?
+
+Bonus question
+
+- Why 31, 42, 63, ... as given above? For more details see [Available horizontal resolutions](https://speedyweather.github.io/SpeedyWeather.jl/dev/spectral_transform/#Available-horizontal-resolutions) and [Matching spectral and grid resolution](https://speedyweather.github.io/SpeedyWeather.jl/dev/grids/#Matching-spectral-and-grid-resolution)
+- How are the vertical layers spaced? Check `spectral_grid.vertical_coordinates` and read on [Sigma coordinates](https://speedyweather.github.io/SpeedyWeather.jl/dev/primitiveequation/#Sigma-coordinates)
+
+
 ## Change the grid
+
+While SpeedyWeather is a spectral model not all computations are done in spectral space,
+many are still done in grid space. That's why people often call this method also _pseudo_-spectral.
+You can control the grid through the argument `Grid`
+
+```@example instructions
+spectral_grid =  SpectralGrid(trunc=31, Grid=FullGaussianGrid)
+```
+
+Try `FullGaussianGrid`, `FullClenshawGrid`, `OctahedralGaussianGrid`, or `HEALPixGrid`
+among [others](https://speedyweather.github.io/SpeedyWeather.jl/dev/grids/). Do they
+have any impact on the simulated precipitation? More generally
+
+- Which grids have more, which fewer (horizontal) grid points at a given `trunc`?
+- On each grid, are the grid cells globally of similar size or not?
+- [Visualise](https://speedyweather.github.io/SpeedyWeather.jl/dev/grids/#Interactively-exploring-the-grids) the grids!
+
+Bonus question
+
+- A higher/lower `dealiasing` increases/decreases the grid resolution without changes the spectral resolution. Why would one do that?
+
 
 ## Change the time step
 
+The time step of SpeedyWeather is controlled through the time stepping method of the model. This model component
+needs to know the spatial resolution to pick a time step by default that is stable, but you can still control this.
+SpeedyWeather's time integration is based on the `Leapfrog` scheme, so you create such a component like this
+
+```@example instructions
+time_stepping = Leapfrog(spectral_grid, Δt_at_T31=Minute(20))
+```
+
+where the argument `Δt_at_T31` determines the timestep `Δt` (write `\Delta` then hit tab) relative to a truncation of
+31 (called T31), the actual time step is then in `Δt_sec`, scaled linearly from T31 to whatever resolution you chose.
+You can provide any `Second`, `Minute`, `Hour` (but note that there is a stability limit above which your simulation quickly blows up).
+But do not forget to also pass this component to the model constructor, i.e.
+
+```@example instructions
+model = PrimitiveWetModel(spectral_grid; time_stepping)
+nothing # hide
+```
+
+where `; time_stepping` matches a keyword argument `time_stepping` with the variable of the same name. This is equivalent
+to `, time_stepping=time_stepping`.
+
+
+- How large a time step can you choose for a T31 resolution?
+- How does the speed or simulation time change with a changed time step?
+
+Bonus question
+
+- How do you choose a sensible time step?
+
 ## Change the season
+
+Some boundary conditions of SpeedyWeather depend by default on the time of the year, these are
+
+- sea and land surface temperatures
+- soil moisture
+
+changing the start time of your simulation therefore will have an impact on precipitation.
+At the moment no boundary conditions change with the year.
+You can change this start time when the model is initialized, i.e.
+
+```@example instructions
+simulation = initialize!(model, time=DateTime(2000, 8, 1))
+simulation.prognostic_variables.clock
+```
+
+With the last line you can inspect the `clock` object that keeps track of time.
+
+- Why would precipitation be higher or lower in different seasons?
 
 ## Change the orography
 
