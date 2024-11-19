@@ -1,7 +1,6 @@
 # RainMaker.jl
 
-[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://speedyweather.github.io/RainMaker.jl/stable/)
-[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://speedyweather.github.io/RainMaker.jl/dev/)
+[![docs](https://img.shields.io/badge/documentation-main-blue.svg)](https://speedyweather.github.io/RainMaker.jl/dev/)
 [![Build Status](https://github.com/SpeedyWeather/RainMaker.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/SpeedyWeather/RainMaker.jl/actions/workflows/CI.yml?query=branch%3Amain)
 
 A repository for the atmospheric general circulation model
@@ -43,6 +42,13 @@ which will produce a [Makie.jl](https://github.com/MakieOrg/Makie.jl) plot
 
 ![Rain gauge plot](https://speedyweather.github.io/RainMaker.jl/dev/rain_gauge.png)
 
+## The RainMaker challenge
+
+New to SpeedyWeather? Read the [instructions](https://speedyweather.github.io/RainMaker.jl/dev/instructions/)
+to know which knobs you could change in SpeedyWeather in order to make it rain more or less.
+While the most successful rainmaker probably requires a combination of several knobs this
+is a good starting point.
+
 ## Submit to the RainMaker challenge
 
 Create a pull request with a julia script `some_file_name.jl` to be placed
@@ -62,3 +68,14 @@ in the documentation for more details.
 
 See [the leaderboard](https://speedyweather.github.io/RainMaker.jl/dev/leaderboard/)
 in the documentation.
+
+## Installation
+
+RainMaker.jl is a registered package, in the Julia REPL simply do
+```julia
+julia> ] add SpeedyWeather, RainMaker
+```
+where `]` opens the package manager. Alternatively, you can do `using Pkg; Pkg.add(["SpeedyWeather", "RainMaker"])`
+to import the package manager `Pkg` and then to add the `RainMaker` and `SpeedyWeather` package. You can install
+just RainMaker and SpeedyWeather will be installed automatically, but in most cases you need SpeedyWeather explicitly
+anyway.

@@ -126,6 +126,7 @@ makedocs(;
         "New to Julia?" => "new_to_julia.md",
         "RainGauge" => "rain_gauge.md",
         "RainMaker challenge" => [
+            "Instructions" => "instructions.md",
             "Submit" => "submit.md",
             "Leaderboard" => "leaderboard.md",
             "List of submissions" => "submissions.md",
