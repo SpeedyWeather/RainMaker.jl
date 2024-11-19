@@ -75,7 +75,7 @@ in the documentation.
 ```julia
 julia> ] add SpeedyWeather, RainMaker
 ```
-where `]` opens the package manager. Alternatively, you can do `using Pkg; Pkg.add(["SpeedyWeather", "RainMaker"])`
+where `]` opens the package manager (the prompt changes to `(@v1.11) pkg>`). Alternatively, you can do `using Pkg; Pkg.add(["SpeedyWeather", "RainMaker"])`
 to import the package manager `Pkg` and then to add the `RainMaker` and `SpeedyWeather` package. You can install
 just RainMaker and SpeedyWeather will be installed automatically, but in most cases you need SpeedyWeather explicitly
 anyway.
