@@ -71,7 +71,7 @@ in the documentation.
 
 ## Installation
 
-RainMaker.jl is a registered package, in the Julia REPL simply do
+[Install Julia](https://julialang.org/downloads/#install_julia). Then, RainMaker.jl is a registered package, in the Julia REPL simply do
 ```julia
 julia> ] add SpeedyWeather, RainMaker
 ```
