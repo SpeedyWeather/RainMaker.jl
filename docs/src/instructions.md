@@ -10,6 +10,8 @@ There's more information in the [SpeedyWeather documentation](https://speedyweat
 but in short there are 4 steps
 
 ```julia
+using SpeedyWeather
+
 # 1. define the resolution
 spectral_grid = SpectralGrid(trunc=31, nlayers=8)
 
@@ -40,6 +42,7 @@ through the keyword argument `trunc` of the `SpectralGrid` object that defines
 the resolution of a simulation
 
 ```@example instructions
+using SpeedyWeather
 spectral_grid =  SpectralGrid(trunc=42)
 ```
 
