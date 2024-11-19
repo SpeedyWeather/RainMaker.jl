@@ -108,8 +108,6 @@ Bonus question
 
 ## Change the season
 
-
-
 ## Change the orography
 
 ## Change the land-sea mask
