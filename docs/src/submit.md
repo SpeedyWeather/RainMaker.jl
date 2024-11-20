@@ -1,9 +1,10 @@
 # Submit to the RainMaker challenge
 
 The easiest is to have a look a existing submissions listed in
-[List of submissions](@ref). Submit by creating a pull request
-adding a julia script `file_name.jl` in the folder `/submissions`
-of the repository. This script contains your SpeedyWeather
+[List of submissions](@ref) and get some inspirations what else
+to change from [RainMaker instructions](@ref). Submit by creating
+a pull request adding a julia script `file_name.jl` in the folder
+`/submissions` of the repository. This script contains your SpeedyWeather
 model setup including instructions to run the model so
 that the [RainGauge](@ref) records for 20 days for a 20-day challenge.
 

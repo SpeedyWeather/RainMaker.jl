@@ -1,8 +1,11 @@
-# Instructions
+# RainMaker instructions
 
 While the [List of submissions](@ref) gives you some idea of what you can do make it rain
 more or less in a SpeedyWeather simulation, the following provides more instructions
 and serves as an introduction to atmospheric modelling with SpeedyWeather.
+
+You can analyse precipitation as a time series ([Visualising RainGauge measurements](@ref))
+or as a global map accumulated during the simulation ([Visualising accumulated rainfall globally](@ref)).
 
 ## General workflow to run SpeedyWeather
 
@@ -141,7 +144,66 @@ With the last line you can inspect the `clock` object that keeps track of time.
 
 ## Change the orography
 
+You can change the orography in several different ways, the most convenient is
+probably using the `set!` function with anonymous functions `(λ,φ) -> ...`
+of longitude ``\lambda`` and latitude ``\varphi`` as outlined [here](https://speedyweather.github.io/SpeedyWeather.jl/dev/orography/#Changing-orography-manually). In brief, _after_ model initialization
+(otherwise orography would also be initialized, overwriting your changes)
+
+```@example instructions
+# set to a global constant
+set!(model, orography=0)
+
+# add two 2000m ridges at +-30˚E from 60˚S to 60˚N 
+H, λ₀, φmax = 2000, 15, 60
+set!(model, orography=(λ,φ) -> 2λ₀ < λ < 360-2λ₀ || abs(φ) > φmax ? 0 : H*sind(180*λ/2λ₀)^2)
+
+# add a zonal ridge between 60˚E and 300˚E
+set!(model, orography=(λ,φ) -> λ > 4λ₀ && λ < 360-4λ₀ && abs(φ) < 20 ? H*cosd(3φ)^2 : 0, add=true)
+
+# add two Gaussian mountains
+λ1, λ2  = (120, 240)    # longitude positions [˚E]
+φ₀ = 45                 # latitude [˚N]
+σ = 5                   # width [˚]
+
+# first mountain, radius=360/2π to have distance in ˚ again (not meters)
+set!(model, orography=(λ,φ) -> H*exp(-spherical_distance((λ,φ), (λ1,φ₀), radius=360/2π)^2/2σ^2), add=true)
+
+# and add second
+set!(model, orography=(λ,φ) -> H*exp(-spherical_distance((λ,φ), (λ2,φ₀), radius=360/2π)^2/2σ^2), add=true)
+```
+
+Whatever orography you construct, you can always check it with
+
+```@example instructions
+using CairoMakie
+heatmap(model.orography.orography, title="Orography [m]: Is it supposed to be a smiley?")
+save("smiley.png", ans) # hide
+nothing # hide
+```
+![Orography](smiley.png)
+
 ## Change the land-sea mask
+
+Similar to the orography you can change the land-sea mask. Find some more details
+[here](https://speedyweather.github.io/SpeedyWeather.jl/dev/land_sea_mask/).
+Note that the land-sea mask does not have to agree with the orography,
+yes you can put an ocean on the top of Mount Everest! However, surface fluxes
+over land (as determined by the land-sea mask) are zero if the respective
+surface fields are NaN there. Meaning if you want to put an ocean on the top
+of Mount Everest you also will need to define the sea surface temperature there.
+
+For example, we could flood the southern hemisphere with
+
+```@example instructions
+# this will be automatically clamped back into [0, 1]
+set!(model, land_sea_mask=(λ, φ) -> φ < 0 ? -1 : 0, add=true)
+
+heatmap(model.land_sea_mask.mask, title="Land-sea mask with a southern hemisphere ocean")
+save("sh_ocean.png", ans) # hide
+nothing # hide
+```
+![SH Ocean](sh_ocean.png)
+
 
 ## Change the surface temperatures
 

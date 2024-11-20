@@ -14,6 +14,7 @@ Contents
 - [Installation](@ref)
 - [New to Julia?](@ref)
 - [RainGauge](@ref)
+- [RainMaker instructions](@ref)
 - [Submit to the RainMaker challenge](@ref)
 - [RainMaker leaderboard](@ref)
 - [List of submissions](@ref)
