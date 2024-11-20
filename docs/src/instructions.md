@@ -192,6 +192,19 @@ over land (as determined by the land-sea mask) are zero if the respective
 surface fields are NaN there. Meaning if you want to put an ocean on the top
 of Mount Everest you also will need to define the sea surface temperature there.
 
+For example, we could flood the southern hemisphere with
+
+```@example instructions
+# this will be automatically clamped back into [0, 1]
+set!(model, land_sea_mask=(λ, φ) -> φ < 0 ? -1 : 0, add=true)
+
+heatmap(model.land_sea_mask.mask, title="Land-sea mask with a southern hemisphere ocean")
+save("sh_ocean.png", ans) # hide
+nothing # hide
+```
+![SH Ocean](sh_ocean.png)
+
+
 ## Change the surface temperatures
 
 ## Change the initial conditions
