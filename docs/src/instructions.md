@@ -158,7 +158,7 @@ H, λ₀, φmax = 2000, 15, 60
 set!(model, orography=(λ,φ) -> 2λ₀ < λ < 360-2λ₀ || abs(φ) > φmax ? 0 : H*sind(180*λ/2λ₀)^2)
 
 # add a zonal ridge between 60˚E and 300˚E
-set!(model, orography=(λ,φ) -> λ < 4λ₀ || λ > 360-4λ₀ || abs(φ) > 20 ? H*cosd(3φ)^2 : 0, add=true)
+set!(model, orography=(λ,φ) -> λ > 4λ₀ && λ < 360-4λ₀ && abs(φ) < 20 ? H*cosd(3φ)^2 : 0, add=true)
 
 # add two Gaussian mountains
 λ1, λ2  = (120, 240)    # longitude positions [˚E]
