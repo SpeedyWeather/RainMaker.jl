@@ -3,7 +3,7 @@
 # 3. No changes to the following physics inside SpeedyWeather: Large-scale condensation, convection, surface evaporation, or radiation.
 # 4. Sea and land surface temperatures cannot exceed 305K anywhere during the simulation.
 author = "Charlotte Merchant"
-description = "The Rapture: Big Super Mega Ultra Clapped Humid North Sea Mountain HR Injection Under More Pressure"
+description = "The Rapture: Big Super Mega Ultra Clapped Humid North Sea Mountain HR Injection Under More Pressure Initially"
 
 using SpeedyWeather, RainMaker
 
@@ -65,7 +65,7 @@ simulation = initialize!(model)
 H, λ₀, φ₀, σ = 4000, 2, 51, 5
 set!(model, orography=(λ,φ) -> H*exp(-spherical_distance((λ,φ), (λ₀,φ₀), radius=360/2π)^2/2σ^2))
 set!(simulation, humid=0.16)
+set!(simulation, pres=20)
 run!(simulation, period=Day(20))
-
 
 RainMaker.plot(rain_gauge)
