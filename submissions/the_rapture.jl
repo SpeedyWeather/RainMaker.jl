@@ -9,7 +9,7 @@ using SpeedyWeather, RainMaker
 
 spectral_grid = SpectralGrid(trunc=64, nlayers=8)
 atm = EarthAtmosphere(spectral_grid)
-clausius_clapeyron = ClausiusClapeyron(spectral_grid, atm, e₀=0.1)
+clausius_clapeyron = ClausiusClapeyron(spectral_grid, atm, e₀=0.0001)
 model = PrimitiveWetModel(spectral_grid; clausius_clapeyron)
 
 Base.@kwdef struct inject <: SpeedyWeather.AbstractCallback
@@ -35,12 +35,12 @@ function SpeedyWeather.callback!(
     isscheduled(callback.schedule, progn.clock) || return nothing
     
     set!(progn, model.geometry, humid=(λ, φ, z) -> if z < 2
-                                                 0.15
+                                                 0.16
                                               else
                                                  0.07
                                               end)
     set!(progn, model.geometry, sea_surface_temperature=(λ, φ) -> 304.5 - 0.5 * abs(φ))
-    set!(progn, model.geometry, land_surface_temperature=(λ, φ) -> 304.0)
+    set!(progn, model.geometry, land_surface_temperature=(λ, φ) -> 304.5)
     set!(progn, model.geometry, temp=(λ, φ, z) -> 290 + (z < 5 ? 8 * z : -2 * (z - 5)))
     set!(progn, model.geometry, u=(λ, φ, z) -> if z < 2
                                             -5.0
@@ -63,7 +63,7 @@ simulation = initialize!(model)
 
 H, λ₀, φ₀, σ = 4000, 2, 51, 5
 set!(model, orography=(λ,φ) -> H*exp(-spherical_distance((λ,φ), (λ₀,φ₀), radius=360/2π)^2/2σ^2))
-set!(simulation, humid=0.15)
+set!(simulation, humid=0.16)
 run!(simulation, period=Day(20))
 
 
