@@ -1,3 +1,4 @@
+
 author = "Amy and breddy"
 description = "Reddy4rain"
 
@@ -7,12 +8,13 @@ spectral_grid = SpectralGrid(trunc=12, nlayers=3, Grid=FullGaussianGrid)  # defa
 rain_gauge = RainGauge(spectral_grid, lond=358.75, latd=51.75)
 
 model = PrimitiveWetModel(spectral_grid)
-add!(model, rain_gauge)
 
 model.callbacks
 
 simulation = initialize!(model, time=DateTime(2024, 10, 1))
 
+# (; a, b) = struct unpacks the fields a, b in struct identified by name, equivalent to
+# a = struct.a and b = struct.b
 (; precip_large_scale, precip_convection) = simulation.diagnostic_variables.physics
 total_precipitation = precip_large_scale + precip_convection
 total_precipitation *= 1000# convert m to mm
@@ -52,6 +54,7 @@ set!(simulation, humid=0.3, pres=15.1)
 # after that week we already simulated
 rain_gauge_after_spinup  = RainGauge(spectral_grid, lond=-1.25, latd=51.75)
 add!(model, rain_gauge_after_spinup)
+add!(model, rain_gauge)
 run!(simulation, period=Day(20))
 
 # now compare them, from the beginning
