@@ -20,6 +20,8 @@ set!(simulation, sea_surface_temperature=(λ, φ) -> (10 < φ < 20) && (52 < λ 
 # set to a global constant
 set!(model, orography=0)
 
+H, λ₀, φmax = 10000, 15, 60
+
 # add two Gaussian mountains
 λ1, λ2  = (120, 240)    # longitude positions [˚E]
 φ₀ = 45                 # latitude [˚N]
