@@ -29,3 +29,4 @@ the [Leaderboard](@ref).
 2. The rain gauge must be placed at the agreed longitude and latitude coordinates.
 3. No changes to the following physics inside SpeedyWeather: Large-scale condensation, convection, surface evaporation, or radiation.
 4. Sea and land surface temperatures cannot exceed 305K anywhere during the simulation.
+5. The simulation must remain stable over the 20-day period.
