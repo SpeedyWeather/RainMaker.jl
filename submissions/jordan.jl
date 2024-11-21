@@ -1,3 +1,5 @@
+author = "Jordan"
+
 using SpeedyWeather, RainMaker
 
 spectral_grid = SpectralGrid(trunc=31, nlayers=8)
