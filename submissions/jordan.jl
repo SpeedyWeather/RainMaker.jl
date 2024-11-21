@@ -1,5 +1,7 @@
 using SpeedyWeather, RainMaker
 
+spectral_grid = SpectralGrid(trunc=31, nlayers=8)
+
 ocean = AquaPlanet(spectral_grid, temp_equator=302, temp_poles=300)
 land = ConstantLandTemperature(spectral_grid)
 
