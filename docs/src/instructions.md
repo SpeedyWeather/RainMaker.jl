@@ -271,3 +271,30 @@ there is not any land!
 
 
 ## Change the initial conditions
+
+Changing the initial conditions is somewhat more advanced but gives you way more options
+is therefore added here in case you want to be creative. But you can also use it to create
+an ensemble by simply adding some small random noise and check how quickly the trajectories
+diverge (butterfly effect) or check whether in any member it rains more or less.
+The prognostic variables are
+
+- relative vorticity `vor` units of 1/s, typical values are 5 to 10e-5 for high and low pressure (which sign is which?) systems
+- divergence `div`, units of 1/s, similar scale
+- temperature `temp`, units of K
+- logarithm of surface pressure `pres` in units of Pascal, with typical values of 960-1040hPa before the logarithm
+- humidity `humid`, units of kg/kg, tropical surface values reach order of 10 g/kg.
+
+You can set them with
+
+```julia
+set!(simulation, humid=0)
+```
+
+to start with a dry atmosphere for example (how long does it take to rain when you do that?).
+You can use the same `set!` options as before, so maybe you can figure out
+
+- how to add a storm?
+- how to start in a heatwave?
+
+Some more information on setting the initial conditions can be found
+[here](https://speedyweather.github.io/SpeedyWeather.jl/dev/initial_conditions/).
