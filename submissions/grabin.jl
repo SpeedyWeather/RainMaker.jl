@@ -1,3 +1,5 @@
+author = "George"
+
 using SpeedyWeather, RainMaker
 
 # create a model
