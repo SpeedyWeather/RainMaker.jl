@@ -3,13 +3,13 @@
 # 3. No changes to the following physics inside SpeedyWeather: Large-scale condensation, convection, surface evaporation, or radiation.
 # 4. Sea and land surface temperatures cannot exceed 305K anywhere during the simulation.
 author = "Charlotte Merchant"
-description = "The Rapture: Clapped Humid North Sea Mountain HR Injection"
+description = "The Rapture: Ultra Clapped Humid North Sea Mountain HR Injection"
 
 using SpeedyWeather, RainMaker
 
 spectral_grid = SpectralGrid(trunc=64, nlayers=8)
 atm = EarthAtmosphere(spectral_grid)
-clausius_clapeyron = ClausiusClapeyron(spectral_grid, atm, e₀=50)
+clausius_clapeyron = ClausiusClapeyron(spectral_grid, atm, e₀=5)
 model = PrimitiveWetModel(spectral_grid; clausius_clapeyron)
 
 Base.@kwdef struct inject <: SpeedyWeather.AbstractCallback
@@ -40,7 +40,7 @@ function SpeedyWeather.callback!(
                                                  0.07
                                               end)
     set!(progn, model.geometry, sea_surface_temperature=(λ, φ) -> 304.5 - 0.5 * abs(φ))
-    set!(progn, model.geometry, land_surface_temperature=(λ, φ) -> 303.0)
+    set!(progn, model.geometry, land_surface_temperature=(λ, φ) -> 304.0)
     set!(progn, model.geometry, temp=(λ, φ, z) -> 290 + (z < 5 ? 8 * z : -2 * (z - 5)))
     set!(progn, model.geometry, u=(λ, φ, z) -> if z < 2
                                             -5.0
