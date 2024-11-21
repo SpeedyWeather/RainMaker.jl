@@ -57,6 +57,9 @@ the number of vertical layers with the keyword argument `nlayers`, e.g.
 spectral_grid =  SpectralGrid(trunc=31, nlayers=5)
 ```
 
+Note however, that too many vertical layers can make the model unstable
+because of the (simpler) vertical advection that is used. This is not the place
+to elaborate on that, but just to warn you that `nlayers=100` is unlikely to "just work".
 Try to find out more generally, with changing `trunc` and `nlayers`
 
 - How does the grid spacing change?
@@ -207,4 +210,91 @@ nothing # hide
 
 ## Change the surface temperatures
 
+By default, SpeedyWeather uses seasonally changing sea and land surface temperature
+coming from climatology, you can check this with
+
+```@example instructions
+model.ocean
+```
+
+and for land
+
+```@example instructions
+model.land
+```
+
+while you can use `set!(simulation, sea_surface_temperature=...)` to tweak the
+sea surface temperature (and similar for `land_surface_temperature`. both in Kelvin)
+as long as the `model.ocean` and `model.land` are set to seasonally changing
+your efforts will be quickly overwritten in the next time step as the "ocean model"
+and the "land model" component of SpeedyWeather evolve following the seasonal cycle.
+For a 20-day simulation these changes are not big, but mean you need to switch off
+that seasonal cycle and use constant temperatures instead. You do this with
+
+```@example instructions
+ocean = AquaPlanet(spectral_grid)
+```
+
+and 
+
+```@example instructions
+land = ConstantLandTemperature(spectral_grid)
+```
+
+which you can then pass on to the model constructor
+
+```@example instructions
+model = PrimitiveWetModel(spectral_grid; ocean, land)
+nothing # hide
+```
+
+Now you have basically "frozen" the sea and land surface temperature in time,
+meaning you can tweak them with `set!` as before. For example,
+we could add a 2K in the "North Atlantic" with
+
+
+```@example instructions
+simulation = initialize!(model)
+set!(model, land_sea_mask=0)    # all ocean!
+set!(simulation, sea_surface_temperature=(λ, φ) -> (30 < φ < 60) && (270 < λ < 360) ? 2 : 0, add=true)
+
+sst = simulation.prognostic_variables.ocean.sea_surface_temperature
+heatmap(sst, title="SST with +2K in North Atlantic")
+save("sst_2K.png", ans) # hide
+nothing # hide
+```
+![SST +2K](sst_2K.png)
+
+and similar for the `land_surface_temperature` in which case you would need to
+set the land-sea mask to 1 though, otherwise, while the land surface temperature is defined,
+there is not any land!
+
+
 ## Change the initial conditions
+
+Changing the initial conditions is somewhat more advanced but gives you way more options
+is therefore added here in case you want to be creative. But you can also use it to create
+an ensemble by simply adding some small random noise and check how quickly the trajectories
+diverge (butterfly effect) or check whether in any member it rains more or less.
+The prognostic variables are
+
+- relative vorticity `vor` units of 1/s, typical values are 5 to 10e-5 for high and low pressure (which sign is which?) systems
+- divergence `div`, units of 1/s, similar scale
+- temperature `temp`, units of K
+- logarithm of surface pressure `pres` in units of Pascal, with typical values of 960-1040hPa before the logarithm
+- humidity `humid`, units of kg/kg, tropical surface values reach order of 10 g/kg.
+
+You can set them with
+
+```julia
+set!(simulation, humid=0)
+```
+
+to start with a dry atmosphere for example (how long does it take to rain when you do that?).
+You can use the same `set!` options as before, so maybe you can figure out
+
+- how to add a storm?
+- how to start in a heatwave?
+
+Some more information on setting the initial conditions can be found
+[here](https://speedyweather.github.io/SpeedyWeather.jl/dev/initial_conditions/).
