@@ -14,6 +14,6 @@ rain_gauge = RainGauge(spectral_grid, lond=-1.25, latd=51.75)
 add!(model, rain_gauge)
 
 simulation = initialize!(model)
-set!(model)
+set!(simulation, humid=0.18)
 set!(simulation, sea_surface_temperature=(λ, φ) -> (50 < φ < 53) && (50 < λ < 60) ? 5 : 0, add=true)
 run!(simulation, period=Day(20))
