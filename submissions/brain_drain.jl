@@ -28,7 +28,7 @@ rain_gauge = RainGauge(spectral_grid, lond=-1.25, latd=51.75)
 add!(model, rain_gauge)
 
 simulation = initialize!(model)
-set!(simulation, humid=6)
+set!(simulation, humid=6, pres =15.1)
 
 # build the wall
 H, λ₀, φ₀, σ = 8000, 2, 51, 1     # height, lon, lat position, and width
