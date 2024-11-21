@@ -57,6 +57,9 @@ the number of vertical layers with the keyword argument `nlayers`, e.g.
 spectral_grid =  SpectralGrid(trunc=31, nlayers=5)
 ```
 
+Note however, that too many vertical layers can make the model unstable
+because of the (simpler) vertical advection that is used. This is not the place
+to elaborate on that, but just to warn you that `nlayers=100` is unlikely to "just work".
 Try to find out more generally, with changing `trunc` and `nlayers`
 
 - How does the grid spacing change?
