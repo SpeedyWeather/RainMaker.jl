@@ -3,11 +3,11 @@
 # 3. No changes to the following physics inside SpeedyWeather: Large-scale condensation, convection, surface evaporation, or radiation.
 # 4. Sea and land surface temperatures cannot exceed 305K anywhere during the simulation.
 author = "Charlotte Merchant"
-description = "The Rapture: Mega Ultra Clapped Humid North Sea Mountain HR Injection"
+description = "The Rapture: Big Super Mega Ultra Clapped Humid North Sea Mountain HR Injection"
 
 using SpeedyWeather, RainMaker
 
-spectral_grid = SpectralGrid(trunc=64, nlayers=8)
+spectral_grid = SpectralGrid(trunc=100, nlayers=8)
 atm = EarthAtmosphere(spectral_grid)
 clausius_clapeyron = ClausiusClapeyron(spectral_grid, atm, e₀=0.0001)
 model = PrimitiveWetModel(spectral_grid; clausius_clapeyron)
