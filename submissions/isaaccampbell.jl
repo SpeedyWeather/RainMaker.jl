@@ -1,3 +1,6 @@
+author = "Isaac Campbell"
+description = "Up initial humidity and lower saturation vapour pressure."
+
 using SpeedyWeather, RainMaker
 
 # Create grid
