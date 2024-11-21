@@ -45,5 +45,5 @@ set!(model, orography=(λ,φ) -> H*exp(-spherical_distance((λ,φ), (λ1,φ₀),
 
 # and add second
 set!(model, orography=(λ,φ) -> H*exp(-spherical_distance((λ,φ), (λ2,φ₀), radius=360/2π)^2/2σ^2), add=true)
-
+set!(simulation, humid=0.18)
 run!(simulation, period=Day(20))
