@@ -134,8 +134,9 @@ makedocs(;
     ],
 )
 
-deploydocs(;
+deploydocs(
     repo="github.com/SpeedyWeather/RainMaker.jl",
     devbranch="main",
     push_preview = true,
+    versions = ["stable" => "v^", "v#.#.#", "dev" => "dev"],
 )
