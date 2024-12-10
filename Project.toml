@@ -1,7 +1,7 @@
 name = "RainMaker"
 uuid = "ce1e5628-4095-449b-8858-623a1e420393"
 authors = ["Milan Klöwer <milankloewer@gmx.de> and contributors"]
-version = "0.1.1"
+version = "0.1.1+doc1"
 
 [deps]
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
