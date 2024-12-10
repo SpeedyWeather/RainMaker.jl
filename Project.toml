@@ -1,7 +1,7 @@
 name = "RainMaker"
 uuid = "ce1e5628-4095-449b-8858-623a1e420393"
 authors = ["Milan Klöwer <milankloewer@gmx.de> and contributors"]
-version = "0.1.0"
+version = "0.1.1"
 
 [deps]
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
@@ -14,7 +14,7 @@ SpeedyWeather = "9e226e20-d153-4fed-8a5b-493def4f21a9"
 CairoMakie = "0.12"
 DocStringExtensions = "0.9"
 SpeedyWeather = "0.12, 0.13"
-julia = "1.10"
+julia = "1.10, 1.11"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
