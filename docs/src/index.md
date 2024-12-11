@@ -19,6 +19,12 @@ Contents
 - [RainMaker leaderboard](@ref)
 - [List of submissions](@ref)
 
+Older versions of the documentation correspond to previous challenges used
+for teaching, may have different rules, but can be looked up as an archive
+of submissions to the RainMaker challenge.
+
+- [__RainMaker.jl v0.1.1__: Intelligent Earth CDT, Oxford, November 2024](https://speedyweather.github.io/RainMaker.jl/v0.1.1/leaderboard/)
+
 ## Installation
 
 [RainMaker.jl](https://github.com/SpeedyWeather/RainMaker.jl) is an official
