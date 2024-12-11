@@ -64,10 +64,14 @@ See
 and [Rules](https://speedyweather.github.io/RainMaker.jl/dev/submit/#Rules)
 in the documentation for more details.
 
-## Current leader board
+## Leader board
 
-See [the leaderboard](https://speedyweather.github.io/RainMaker.jl/dev/leaderboard/)
-in the documentation.
+The RainMaker challenge is used for teaching. After every such teaching sessions we tag a new release to have a version of the documentation
+with a leader board corresponding to that session. Afterwards we remove the submissions in the main branch so that for the next
+teaching session the group does not have to compete with the previous subsmissions. Also because we may make changes to the rules.
+Leaderboards and corresponding versions of RainMaker.jl are
+
+- [__RainMaker.jl v0.1.1__: Intelligent Earth CDT, Oxford, November 2024](https://speedyweather.github.io/RainMaker.jl/v0.1.1/leaderboard/)
 
 ## Installation
 
