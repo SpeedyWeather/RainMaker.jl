@@ -127,6 +127,45 @@ function reset!(
 end
 
 """$(TYPEDSIGNATURES)
+Renormalize a `rain_gauge` to skip the first `period` (e.g. 5 days) of
+measurements."""
+function skip!(rain_gauge::RainGauge, period::Dates.Period)
+    @assert period >= Second(0) "Cannot skip negative period $period"
+    t_end = rain_gauge.measurement_counter*rain_gauge.Δt
+    @assert period <= t_end "Cannot skip $period, more than what was recorded for: $t_end"
+    
+    # get index for timestep to normalize to 0, this "skips" the previous time steps
+    # in the accumulated rainfall and makes their rainfall negative, doesn't affect
+    # the rain rate but changes the accumulated rainfall at the last time step to
+    # the accumulated rainfall since the skipped time step
+    i = floor(Int, Second(period).value / Second(rain_gauge.Δt).value)
+    i == 0 && return nothing
+
+    lsc = rain_gauge.accumulated_rain_large_scale
+    conv = rain_gauge.accumulated_rain_convection
+    
+    lsc0 = lsc[i]       # values that we will normalize with
+    conv0 = conv[i]
+
+    # set the start values first which are used in case the rain gauge is started after the simulation
+    rain_gauge.accumulated_rain_large_scale_start -= lsc0
+    rain_gauge.accumulated_rain_convection_start -= conv0
+
+    # normalize, only the range of values that have already been measured
+    lsc[1:rain_gauge.measurement_counter] .-= lsc0
+    conv[1:rain_gauge.measurement_counter] .-= conv0
+
+    return rain_gauge
+end
+
+# non-mutating version, allocates a (deep) copy of raingauge
+function Base.skip(gauge::RainGauge, period::Dates.Period)
+    gauge2 = deepcopy(gauge)
+    skip!(gauge2, period)
+    return gauge2
+end
+
+"""$(TYPEDSIGNATURES)
 Callback definition for `gauge::RainGauge` from `RainMaker.jl`.
 Interpolates large-scale and convective precipitation to the gauge's
 storage vectors and converts units from m to mm. Stops measuring if the
@@ -173,7 +212,14 @@ used to bin the precipitation rate, while units are always converted to
 mm/day. Default is 6 hours."""
 function plot(
     gauge::RainGauge;
-    rate_Δt::Dates.Period = Dates.Hour(6))
+    skip::Period = Day(0),
+    rate_Δt::Period = Hour(6),
+)
+    # skip the first `skip` days if desired
+    if skip > Second(0)
+        # create a copy but name it the same
+        gauge = Base.skip(gauge, skip)
+    end
 
     fig = Figure(size=(800, 400))
     ax1 = Axis(fig[1,1],
@@ -187,7 +233,8 @@ function plot(
 
     linkxaxes!(ax1, ax2)
 
-    t = range(0, step=Dates.Second(gauge.Δt).value/3600/24, length=gauge.measurement_counter)
+    # time axis in Float64 days, as Makie doesn't like Dates objects on x-axis yet
+    t = range(0, step=Second(gauge.Δt).value/3600/24, length=gauge.measurement_counter)
 
     # ACCUMULATED PRECIPITATION
     # range of recorded precipitation only
@@ -201,16 +248,24 @@ function plot(
     # also plot total precipitation and add last value to legend
     max_precip = Printf.@sprintf("%.3f", maximum(lsca) + maximum(conv))
     lines!(ax1, t, conv+lsca, label="total: $max_precip mm", color=:black, alpha=0.8)
-    axislegend(ax1, position=:lt, labelsize=12)
+    
+    # add dashed line to indicate skipped days
+    if skip > Second(0)
+        vlines!(ax1, Second(skip).value/3600/24, linestyle=:dash, color=:black, label="First $skip skipped")
+    end
 
+    axislegend(ax1, position=:lt, labelsize=10)
+    
     # PRECIPITATION RATE
     # use every s-th value to reduce number of bars
-    s = round(Int, Dates.Second(rate_Δt).value / Dates.Second(gauge.Δt).value)
+    s = round(Int, Second(rate_Δt).value / Second(gauge.Δt).value)
     
     # convert from mm to mm/day
-    mm2mmday = Day(1)/(s*Dates.Second(gauge.Δt))
-    lsca_rate = diff(vcat(0, lsca[s:s:end]))*mm2mmday
-    conv_rate = diff(vcat(0, conv[s:s:end]))*mm2mmday
+    mm2mmday = Day(1)/(s*Second(gauge.Δt))
+    lsc0 = gauge.accumulated_rain_large_scale_start
+    conv0 = gauge.accumulated_rain_convection_start
+    lsca_rate = diff(vcat(lsc0, lsca[s:s:end]))*mm2mmday
+    conv_rate = diff(vcat(conv0, conv[s:s:end]))*mm2mmday
     t_rate = t[s:s:end]     # also subset time vector
 
     # Makie's barplot requires stacked bars to be concatenated?!
