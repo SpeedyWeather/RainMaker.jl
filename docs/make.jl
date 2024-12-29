@@ -30,7 +30,7 @@ function run_submission(path::String)
         "location" => (rain_gauge.lond, rain_gauge.latd),
         "total precipitation" => total_precip,
         "convection share" => maximum(conv) / total_precip,
-        "period" => rain_gauge.measurement_counter*rain_gauge.Δt - SKIP_START,
+        "period" => Second(rain_gauge.measurement_counter*rain_gauge.Δt) - Second(SKIP_START),
         "path" => path,
         "code" => read(path, String),
         "rank" => 0,
@@ -114,10 +114,10 @@ open(joinpath(@__DIR__, "src/leaderboard.md"), "w") do mdfile
                 author = dict["author"]
                 description = dict["description"]
                 loc = dict["location"]
-                location = Printf.@sprintf("%.2f˚N, %.2f˚E", loc[2], loc[1])
-                total_precip = Printf.@sprintf("%.3f", dict["total precipitation"])
-                convection_share = Printf.@sprintf("%.1f", 100*dict["convection share"])
-                n_days = Dates.Day(dict["period"]).value
+                location = @sprintf("%.2f˚N, %.2f˚E", loc[2], loc[1])
+                total_precip = @sprintf("%.3f", dict["total precipitation"])
+                convection_share = @sprintf("%.1f", 100*dict["convection share"])
+                n_days = @sprinft("%d", Second(dict["period"]).value / 24 / 3600)   # rounded
                 println(mdfile, "| $rank | $author | $description | $location | $total_precip | $convection_share | $n_days |")
             end
         end
