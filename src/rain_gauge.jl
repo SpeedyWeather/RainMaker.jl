@@ -126,6 +126,8 @@ function reset!(
     return nothing
 end
 
+export skip!
+
 """$(TYPEDSIGNATURES)
 Renormalize a `rain_gauge` to skip the first `period` (e.g. 5 days) of
 measurements."""
