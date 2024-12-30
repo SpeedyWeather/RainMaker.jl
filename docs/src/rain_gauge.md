@@ -111,6 +111,24 @@ rain_gauge
 which adds another 10 days of measurements as if we
 had simulated directly 20 days.
 
+## Skipping first days
+
+After a `rain_gauge` has recorded one can skip the first `n` days
+(or any `period`) using the `skip` function, with `period` as
+second argument
+```@example rain_gauge
+rain_gauge_day10to20 = skip(rain_gauge, Day(10))
+```
+(or use `skip!` as its in-place version, changing the `rain_gauge`
+directly). In this case, skipping the first 10 days is somewhat
+equivalent to only measuring the second 10 days in the
+example from the previous section. However, skipping does not delete
+the measurements in the skipped period but normalizes the accumulated
+rainfall so that it is zero at the end of the skipped period.
+And consequently the accumulated rainfall is now negative at
+the start of the skipped period, this is better explained through
+a visualisation in the next section.
+
 ## Visualising RainGauge measurements
 
 While you always see a summary of a `RainGauge` printed to the REPL, we can also visualise all
@@ -147,6 +165,26 @@ can be `Hour(::Real)`, `Minute(::Real)`, `Day(::Real)`
 but note that the default model time step at default resolution
 is 30min, so you do not get any more information when going
 lower than that.
+
+`RainMaker.plot` also allows to skip an initial period,
+see [Skipping first days](@ref), which is equivalent to calling `plot`
+on a rain gauge which has already been skipped,
+e.g. `RainMaker.plot(rain_gauge, skip=Day(10))`
+is the same as `RainMaker.plot(skip(rain_gauge, Day(10)))`.
+
+```@example rain_gauge
+RainMaker.plot(rain_gauge, skip=Day(10))
+save("rain_gauge_skip.png", ans) # hide
+nothing # hide
+```
+![Rain gauge plot, first 10 days skipped](rain_gauge_skip.png)
+
+This plot nicely illustrates what it means to "skip the first 10 days":
+This does not delete measurements but it renormalizes the accumulated
+precipitation to start in the negative, crosses zero at the end of the
+skipped period. The total accumulated rainfall at the end of the
+full period is then equivalent as if no measurements would have taken
+place from day 0 to day 10 without actually erasing any data.
 
 ## Visualising accumulated rainfall globally
 

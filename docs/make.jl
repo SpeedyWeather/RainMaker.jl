@@ -10,19 +10,27 @@ DocMeta.setdocmeta!(RainMaker, :DocTestSetup, :(using RainMaker); recursive=true
 submissions = filter(x -> endswith(x, ".jl"), readdir(joinpath(@__DIR__, "../submissions")))
 sort!(submissions)  # alphabetical order
 
+const SKIP_START = Day(5)
+
 # RUN SUBMISSIONS
 function run_submission(path::String)
-    include(path)   # actually run the submission
+    include(path)   # actually run the submission, expected to bring "rain_gauge" into scope
 
-    # analyse/evaluate
-    total_precip = maximum(rain_gauge.accumulated_rain_large_scale) + maximum(rain_gauge.accumulated_rain_convection)
+    # skip first five days of measurements 
+    RainMaker.skip!(rain_gauge, SKIP_START)
+
+    # analyse/evaluate, skip first five days of measurements
+    lsc = rain_gauge.accumulated_rain_large_scale
+    conv = rain_gauge.accumulated_rain_convection
+
+    total_precip = maximum(lsc) + maximum(conv)
     submission_dict = Dict(
         "author" => author,
         "description" => description,
         "location" => (rain_gauge.lond, rain_gauge.latd),
         "total precipitation" => total_precip,
-        "convection share" => maximum(rain_gauge.accumulated_rain_convection) / total_precip,
-        "period" => rain_gauge.measurement_counter*rain_gauge.Δt,
+        "convection share" => maximum(conv) / total_precip,
+        "period" => Second(rain_gauge.measurement_counter*rain_gauge.Δt) - Second(SKIP_START),
         "path" => path,
         "code" => read(path, String),
         "rank" => 0,
@@ -76,7 +84,11 @@ open(joinpath(@__DIR__, "src/submissions.md"), "w") do mdfile
                 println(mdfile, "```@example $name")
                 println(mdfile, "using CairoMakie # hide")
                 println(mdfile, dict["code"])
-                println(mdfile, "RainMaker.plot(rain_gauge) # hide")
+
+                # translate SKIP_START::Period const to string
+                period_str = string(typeof(SKIP_START))*"($(SKIP_START.value))"
+
+                println(mdfile, "RainMaker.plot(rain_gauge, skip=$period_str) # hide")
                 println(mdfile, """save("submission_$name.png", ans) # hide""")
                 println(mdfile, "nothing # hide")
                 println(mdfile, "```")
@@ -102,10 +114,10 @@ open(joinpath(@__DIR__, "src/leaderboard.md"), "w") do mdfile
                 author = dict["author"]
                 description = dict["description"]
                 loc = dict["location"]
-                location = Printf.@sprintf("%.2f˚N, %.2f˚E", loc[2], loc[1])
-                total_precip = Printf.@sprintf("%.3f", dict["total precipitation"])
-                convection_share = Printf.@sprintf("%.1f", 100*dict["convection share"])
-                n_days = Dates.Day(dict["period"]).value
+                location = @sprintf("%.2f˚N, %.2f˚E", loc[2], loc[1])
+                total_precip = @sprintf("%.3f", dict["total precipitation"])
+                convection_share = @sprintf("%.1f", 100*dict["convection share"])
+                n_days = @sprintf("%d", Second(dict["period"]).value / 24 / 3600)   # rounded
                 println(mdfile, "| $rank | $author | $description | $location | $total_precip | $convection_share | $n_days |")
             end
         end
