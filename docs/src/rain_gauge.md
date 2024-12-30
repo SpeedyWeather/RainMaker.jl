@@ -114,9 +114,10 @@ had simulated directly 20 days.
 ## Skipping first days
 
 After a `rain_gauge` has recorded one can skip the first `n` days
-(or any period) using the `skip` function. 
+(or any `period`) using the `skip` function, with `period` as
+second argument
 ```@example rain_gauge
-rain_gauge_day10to20 = skip(rain_gauge, period=Day(10))
+rain_gauge_day10to20 = skip(rain_gauge, Day(10))
 ```
 (or use `skip!` as its in-place version, changing the `rain_gauge`
 directly). In this case, skipping the first 10 days is somewhat
@@ -126,7 +127,7 @@ the measurements in the skipped period but normalizes the accumulated
 rainfall so that it is zero at the end of the skipped period.
 And consequently the accumulated rainfall is now negative at
 the start of the skipped period, this is better explained through
-and illustration in the next section.
+a visualisation in the next section.
 
 ## Visualising RainGauge measurements
 
