@@ -102,7 +102,7 @@ loss(sol.u, nothing)
 using SpeedyWeather
 using RainMaker
 
-const PARAMETER_KEYS = (
+PARAMETER_KEYS = (
     :orography_scale,           # [1],      default: 1, scale of global orography
     :mountain_height,           # [m],      default: 0, height of an additional azores mountain
     :mountain_size,             # [˚],      default: 1, horizontal size of an additional azores mountain
