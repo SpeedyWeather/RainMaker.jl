@@ -1,5 +1,5 @@
 author = "Simone"
-description = "Surrogate best parameters"
+description = "A veeery cold atmosphere"
 
 using SpeedyWeather
 using RainMaker
