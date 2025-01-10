@@ -7,16 +7,8 @@ using RainMaker        # v0.2 (or #main)
 spectral_grid = SpectralGrid(trunc=31, nlayers=8)
 
 model = PrimitiveWetModel(spectral_grid)
-
 rain_gauge = RainGauge(spectral_grid, lond=-27.25, latd=38.7)
-add!(model, rain_gauge)    # add to model.callbacks
-rain_gauge
-
-simulation = initialize!(model)
-
-model = PrimitiveWetModel(spectral_grid)
-rain_gauge101 = RainGauge(spectral_grid, lond=-27.25, latd=38.7)
-add!(model, rain_gauge101)
+add!(model, rain_gauge)
 simulation = initialize!(model, time=DateTime(2000, 2, 1))
 
 H = 8000           # height [m]
