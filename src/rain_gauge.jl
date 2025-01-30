@@ -57,8 +57,8 @@ end
 
 function Base.show(io::IO, gauge::RainGauge{T}) where T
     println(io, "$(typeof(gauge)) <: AbstractCallback")
-    println(io, "├ latd::Float64 = $(gauge.latd)˚N")
     println(io, "├ lond::Float64 = $(gauge.lond)˚E")
+    println(io, "├ latd::Float64 = $(gauge.latd)˚N")
 
     now = gauge.tstart + gauge.measurement_counter*gauge.Δt
     now_str = Dates.format(now, "yyyy-mm-dd HH:MM:SS")
@@ -95,7 +95,7 @@ Reset `gauge::RainGauge` to its initial state, i.e. set `measurement_counter` to
 vector to zeros."""
 function reset!(gauge::RainGauge)
     gauge.measurement_counter = 0
-    RingGrids.update_locator!(gauge.interpolator, [gauge.latd], [gauge.lond])
+    RingGrids.update_locator!(gauge.interpolator, [gauge.lond], [gauge.latd])
     gauge.tstart = DEFAULT_DATE
     gauge.Δt = DEFAULT_ΔT
     fill!(gauge.accumulated_rain_convection, 0)
