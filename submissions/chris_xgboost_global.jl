@@ -1,5 +1,47 @@
-author = "Anas"
-description = "Surrogate best parameters"
+author = "Chris Rackauckas"
+description = "XGBoost surrogate, global BBO optimization"
+
+#=
+# Same data as the neural network, just a dead simple surrogate
+
+using JLSO
+cd(raw"/Users/chrisrackauckas/.julia/external/speedier_speedyweather_juliaEO25")
+data = JLSO.load("10kdata.jlso")[:d]
+X = data.inputs'
+y = data.outputs
+
+Xtrain = X[1:2:end, :]
+Xtest  = X[2:2:end, :]
+ytrain = y[1:2:end]
+ytest  = y[2:2:end]
+
+using XGBoost, Statistics
+
+bst = xgboost((Xtrain, ytrain), num_round=1000, max_depth=7, objective="reg:squarederror")
+# obtain model predictions
+ŷ = predict(bst, Xtest)
+mean(abs2,ŷ - ytest)
+
+evaluate(x) = predict(bst, reshape(x,1,10))[1]
+
+using Optimization, OptimizationBBO
+function loss(x,p)
+    -Float64(evaluate(x))
+end
+f = OptimizationFunction(loss)
+lb = [0, -2000, 0, -180, -90, 270, 270, -5, -5, 5]
+ub = [2, 5000, 30, 180, 90, 300, 300, 5, 5, 50]
+x0 = Xtest[1,:]
+prob = Optimization.OptimizationProblem(f, x0; lb, ub)
+
+function callback(state, l) #callback function to observe training
+    display(l)
+    return false
+end
+
+sol = solve(prob, BBO_adaptive_de_rand_1_bin_radiuslimited(), maxiters = 100000,
+    maxtime = 1000.0, callback = callback)
+=#
 
 using SpeedyWeather
 using RainMaker
@@ -18,17 +60,16 @@ PARAMETER_KEYS = (
 )
 
 # output from the surrogate model
-best_param_sample = [
-    0.243467,
-    3456.64,
-    21.2324,
-    -90.1826,
-    58.4064,
-    287.617,
-    295.99,
-    4.98632,
-    3.45722,
-    50.0179,
+best_param_sample = [0.35952993077958434, 
+  3703.1625800261263, 
+  26.34236279617161, 
+  -68.84186967475854, 
+  75.45866186852497, 
+  298.51854709388454, 
+  296.03786989719214, 
+  4.737936621135976, 
+  4.397474802331573, 
+  46.17772842581346
 ]
 
 # wrap into named tuple
