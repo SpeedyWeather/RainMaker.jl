@@ -71,6 +71,7 @@ with a leader board corresponding to that session. Afterwards we remove the subm
 teaching session the group does not have to compete with the previous subsmissions. Also because we may make changes to the rules.
 Leaderboards and corresponding versions of RainMaker.jl are
 
+- [__RainMaker.jl v0.2.1__: JuliaEO 2025, Terceira Island, Azores, January 2025](https://speedyweather.github.io/RainMaker.jl/v0.2.1/leaderboard/)
 - [__RainMaker.jl v0.1.1__: Intelligent Earth CDT, Oxford, November 2024](https://speedyweather.github.io/RainMaker.jl/v0.1.1/leaderboard/)
 
 ## Installation
