@@ -23,6 +23,7 @@ Older versions of the documentation correspond to previous challenges used
 for teaching, may have different rules, but can be looked up as an archive
 of submissions to the RainMaker challenge.
 
+- [__RainMaker.jl v0.2.1__: JuliaEO 2025, Terceira Island, Azores, January 2025](https://speedyweather.github.io/RainMaker.jl/v0.2.1/leaderboard/)
 - [__RainMaker.jl v0.1.1__: Intelligent Earth CDT, Oxford, November 2024](https://speedyweather.github.io/RainMaker.jl/v0.1.1/leaderboard/)
 
 ## Installation
