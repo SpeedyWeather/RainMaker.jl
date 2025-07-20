@@ -51,7 +51,8 @@ end
 # use number format NF from spectral grid if not provided
 function RainGauge(SG::SpectralGrid; kwargs...)
     npoints = 1
-    interpolator = RingGrids.DEFAULT_INTERPOLATOR(SG.NF, SG.Grid, SG.nlat_half, npoints)
+    (; NF, Grid, nlat_half) = SG
+    interpolator = RingGrids.DEFAULT_INTERPOLATOR(Grid, nlat_half, npoints; NF)
     RainGauge{SG.NF, typeof(interpolator)}(; interpolator, kwargs...)
 end
 

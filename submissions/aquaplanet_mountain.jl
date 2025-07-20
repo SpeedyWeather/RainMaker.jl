@@ -12,7 +12,7 @@ land_sea_mask = AquaPlanetMask(spectral_grid)
 model = PrimitiveWetModel(spectral_grid; ocean, land_sea_mask)
 
 # Add rain gauge
-rain_gauge = RainGauge(spectral_grid, lond=-27.25, latd=38.7)
+rain_gauge = RainGauge(spectral_grid, lond=-80, latd=40.45)
 add!(model, rain_gauge)
 
 # Initialize and run simulation

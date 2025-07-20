@@ -238,7 +238,8 @@ ocean = AquaPlanet(spectral_grid)
 and 
 
 ```@example instructions
-land = ConstantLandTemperature(spectral_grid)
+temperature = ConstantLandTemperature(spectral_grid)
+land = LandModel(spectral_grid; temperature)
 ```
 
 which you can then pass on to the model constructor
