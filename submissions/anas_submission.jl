@@ -82,7 +82,7 @@ function max_precipitation(parameters::NamedTuple)
     lsc = rain_gauge.accumulated_rain_large_scale
     conv = rain_gauge.accumulated_rain_convection
     total_precip = maximum(lsc) + maximum(conv)
-    return total_precip
+    return rain_gauge, total_precip
 end
 
 final_params = 
