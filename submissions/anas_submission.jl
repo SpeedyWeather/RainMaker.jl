@@ -97,4 +97,6 @@ final_params =
 4.705338478088379,
 34.92057800292969 ]
 
-max_precipitation(final_params)
+rain_gauge, total_precip = max_precipitation(final_params)
+
+total_precip
