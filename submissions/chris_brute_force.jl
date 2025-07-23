@@ -1,5 +1,5 @@
 author = "Chris Rackauckas"
-description = "Evotrees.jl Surrogate, Claude generated"
+description = "Brute Force OptimizationBBO DE"
 
 #=
 using RainMakerChallenge2025
