@@ -1,0 +1,6 @@
+[deps]
+Flux = "587475ba-b771-5e3f-ad9e-33799f191a9c"
+JLSO = "9da8a3cd-07a3-59c0-a743-3fdc52c30d11"
+RainMaker = "ce1e5628-4095-449b-8858-623a1e420393"
+RainMakerChallenge2025 = "5f621114-1c6d-4d44-a5e9-a686c2e6a146"
+SpeedyWeather = "9e226e20-d153-4fed-8a5b-493def4f21a9"
