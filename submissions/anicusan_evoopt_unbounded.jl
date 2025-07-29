@@ -1,5 +1,5 @@
 author = "A Nicusan"
-description = "Evo opt unbounded"
+description = "Evo opt unbounded (disqualified)"
 
 using SpeedyWeather, RainMaker
 
