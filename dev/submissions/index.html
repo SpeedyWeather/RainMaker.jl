@@ -1,5 +1,203 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>List of submissions · RainMaker.jl</title><meta name="title" content="List of submissions · RainMaker.jl"/><meta property="og:title" content="List of submissions · RainMaker.jl"/><meta property="twitter:title" content="List of submissions · RainMaker.jl"/><meta name="description" content="Documentation for RainMaker.jl."/><meta property="og:description" content="Documentation for RainMaker.jl."/><meta property="twitter:description" content="Documentation for RainMaker.jl."/><meta property="og:url" content="https://speedyweather.github.io/RainMaker.jl/submissions/"/><meta property="twitter:url" content="https://speedyweather.github.io/RainMaker.jl/submissions/"/><link rel="canonical" href="https://speedyweather.github.io/RainMaker.jl/submissions/"/><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../search_index.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">RainMaker.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../">Home</a></li><li><a class="tocitem" href="../new_to_julia/">New to Julia?</a></li><li><a class="tocitem" href="../rain_gauge/">RainGauge</a></li><li><span class="tocitem">RainMaker challenge</span><ul><li><a class="tocitem" href="../instructions/">Instructions</a></li><li><a class="tocitem" href="../submit/">Submit</a></li><li><a class="tocitem" href="../leaderboard/">Leaderboard</a></li><li class="is-active"><a class="tocitem" href>List of submissions</a><ul class="internal"><li><a class="tocitem" href="#Chris-Rackauckas:-Brute-Force-OptimizationBBO-DE"><span>Chris Rackauckas: Brute Force OptimizationBBO DE</span></a></li><li><a class="tocitem" href="#Anas:-NN-Surrogate"><span>Anas: NN Surrogate</span></a></li><li><a class="tocitem" href="#Anas:-200mm-RainMaker"><span>Anas: 200mm+ RainMaker</span></a></li><li><a class="tocitem" href="#Gabriel-Konar-Steenberg:-Brute-force-built-on-Anas-surrogate"><span>Gabriel Konar-Steenberg: Brute force built on Anas surrogate</span></a></li><li><a class="tocitem" href="#Theo-D:-Kriging-Surrogate-with-Latin-Hypercube-Sampling"><span>Theo D: Kriging Surrogate with Latin Hypercube Sampling</span></a></li><li><a class="tocitem" href="#Cameron-Bieganek:-Latin-hypercube-search,-no-surrogate."><span>Cameron Bieganek: Latin hypercube search, no surrogate.</span></a></li><li><a class="tocitem" href="#Chris-Rackauckas:-Evotrees.jl-Surrogate,-Claude-generated"><span>Chris Rackauckas: Evotrees.jl Surrogate, Claude generated</span></a></li><li><a class="tocitem" href="#Shirin-Ermis:-Aqua-planet-simulation-with-a-mountain"><span>Shirin Ermis: Aqua-planet simulation with a mountain</span></a></li><li><a class="tocitem" href="#Milan:-Aquaplanet"><span>Milan: Aquaplanet</span></a></li><li><a class="tocitem" href="#Tim-Reichelt:-North-Sea-mountain"><span>Tim Reichelt: North Sea mountain</span></a></li><li><a class="tocitem" href="#Milan:-default"><span>Milan: default</span></a></li><li><a class="tocitem" href="#Milan:-Atlantic-mountain"><span>Milan: Atlantic mountain</span></a></li></ul></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">RainMaker challenge</a></li><li class="is-active"><a href>List of submissions</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>List of submissions</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/SpeedyWeather/RainMaker.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/SpeedyWeather/RainMaker.jl/blob/main/docs/src/submissions.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="List-of-submissions"><a class="docs-heading-anchor" href="#List-of-submissions">List of submissions</a><a id="List-of-submissions-1"></a><a class="docs-heading-anchor-permalink" href="#List-of-submissions" title="Permalink"></a></h1><p>It follows the code and plot of the <code>RainGauge</code> of all RainMaker submissions to <a href="https://github.com/SpeedyWeather/RainMaker.jl/tree/main/submissions">/submissions</a> sorted in alphabetical order of the filename.</p><h2 id="Chris-Rackauckas:-Brute-Force-OptimizationBBO-DE"><a class="docs-heading-anchor" href="#Chris-Rackauckas:-Brute-Force-OptimizationBBO-DE">Chris Rackauckas: Brute Force OptimizationBBO DE</a><a id="Chris-Rackauckas:-Brute-Force-OptimizationBBO-DE-1"></a><a class="docs-heading-anchor-permalink" href="#Chris-Rackauckas:-Brute-Force-OptimizationBBO-DE" title="Permalink"></a></h2><p>path: <code>/submissions/chris_brute_force.jl</code></p><p>rank: 1. of 12 submissions</p><pre><code class="language-julia hljs">author = &quot;Chris Rackauckas&quot;
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>List of submissions · RainMaker.jl</title><meta name="title" content="List of submissions · RainMaker.jl"/><meta property="og:title" content="List of submissions · RainMaker.jl"/><meta property="twitter:title" content="List of submissions · RainMaker.jl"/><meta name="description" content="Documentation for RainMaker.jl."/><meta property="og:description" content="Documentation for RainMaker.jl."/><meta property="twitter:description" content="Documentation for RainMaker.jl."/><meta property="og:url" content="https://speedyweather.github.io/RainMaker.jl/submissions/"/><meta property="twitter:url" content="https://speedyweather.github.io/RainMaker.jl/submissions/"/><link rel="canonical" href="https://speedyweather.github.io/RainMaker.jl/submissions/"/><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../search_index.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">RainMaker.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../">Home</a></li><li><a class="tocitem" href="../new_to_julia/">New to Julia?</a></li><li><a class="tocitem" href="../rain_gauge/">RainGauge</a></li><li><span class="tocitem">RainMaker challenge</span><ul><li><a class="tocitem" href="../instructions/">Instructions</a></li><li><a class="tocitem" href="../submit/">Submit</a></li><li><a class="tocitem" href="../leaderboard/">Leaderboard</a></li><li class="is-active"><a class="tocitem" href>List of submissions</a><ul class="internal"><li><a class="tocitem" href="#A-Nicusan:-Evo-opt-unbounded-(disqualified)"><span>A Nicusan: Evo opt unbounded (disqualified)</span></a></li><li><a class="tocitem" href="#A-Nicusan:-Evo-opt-bounded"><span>A Nicusan: Evo opt bounded</span></a></li><li><a class="tocitem" href="#Chris-Rackauckas:-Brute-Force-OptimizationBBO-DE"><span>Chris Rackauckas: Brute Force OptimizationBBO DE</span></a></li><li><a class="tocitem" href="#Anas:-NN-Surrogate"><span>Anas: NN Surrogate</span></a></li><li><a class="tocitem" href="#Anas:-200mm-RainMaker"><span>Anas: 200mm+ RainMaker</span></a></li><li><a class="tocitem" href="#Gabriel-Konar-Steenberg:-Brute-force-built-on-Anas-surrogate"><span>Gabriel Konar-Steenberg: Brute force built on Anas surrogate</span></a></li><li><a class="tocitem" href="#Theo-D:-Kriging-Surrogate-with-Latin-Hypercube-Sampling"><span>Theo D: Kriging Surrogate with Latin Hypercube Sampling</span></a></li><li><a class="tocitem" href="#Cameron-Bieganek:-Latin-hypercube-search,-no-surrogate."><span>Cameron Bieganek: Latin hypercube search, no surrogate.</span></a></li><li><a class="tocitem" href="#Chris-Rackauckas:-Evotrees.jl-Surrogate,-Claude-generated"><span>Chris Rackauckas: Evotrees.jl Surrogate, Claude generated</span></a></li><li><a class="tocitem" href="#Shirin-Ermis:-Aqua-planet-simulation-with-a-mountain"><span>Shirin Ermis: Aqua-planet simulation with a mountain</span></a></li><li><a class="tocitem" href="#Milan:-Aquaplanet"><span>Milan: Aquaplanet</span></a></li><li><a class="tocitem" href="#Tim-Reichelt:-North-Sea-mountain"><span>Tim Reichelt: North Sea mountain</span></a></li><li><a class="tocitem" href="#Milan:-default"><span>Milan: default</span></a></li><li><a class="tocitem" href="#Milan:-Atlantic-mountain"><span>Milan: Atlantic mountain</span></a></li></ul></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">RainMaker challenge</a></li><li class="is-active"><a href>List of submissions</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>List of submissions</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/SpeedyWeather/RainMaker.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/SpeedyWeather/RainMaker.jl/blob/main/docs/src/submissions.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="List-of-submissions"><a class="docs-heading-anchor" href="#List-of-submissions">List of submissions</a><a id="List-of-submissions-1"></a><a class="docs-heading-anchor-permalink" href="#List-of-submissions" title="Permalink"></a></h1><p>It follows the code and plot of the <code>RainGauge</code> of all RainMaker submissions to <a href="https://github.com/SpeedyWeather/RainMaker.jl/tree/main/submissions">/submissions</a> sorted in alphabetical order of the filename.</p><h2 id="A-Nicusan:-Evo-opt-unbounded-(disqualified)"><a class="docs-heading-anchor" href="#A-Nicusan:-Evo-opt-unbounded-(disqualified)">A Nicusan: Evo opt unbounded (disqualified)</a><a id="A-Nicusan:-Evo-opt-unbounded-(disqualified)-1"></a><a class="docs-heading-anchor-permalink" href="#A-Nicusan:-Evo-opt-unbounded-(disqualified)" title="Permalink"></a></h2><p>path: <code>/submissions/anicusan_evoopt_unbounded.jl</code></p><p>rank: 1. of 14 submissions</p><pre><code class="language-julia hljs">author = &quot;A Nicusan&quot;
+description = &quot;Evo opt unbounded (disqualified)&quot;
+
+using SpeedyWeather, RainMaker
+
+const PARAMETER_KEYS = (
+    :orography_scale,           # [1],      default: 1, scale of global orography
+    :mountain_height,           # [m],      default: 0, height of an additional mountain
+    :mountain_size,             # [˚],      default: 1, horizontal size of mountain
+    :mountain_lon,              # [˚E],     default: -80, longitude of that mountain
+    :mountain_lat,              # [˚N],     default: 40.45, latitude of that mountain
+    :temperature_equator,       # [K],      default: 300, sea surface temperature at the equator
+    :temperature_pole,          # [K],      default: 273, sea surfaec temperature at the poles
+    :temperature_usa,           # [K],      default: 0, land surface temperature anomaly over the USA
+    :temperature_pa,            # [K],      default: 0, land surface temperature anomaly in Pennsylvania
+    :zonal_wind,                # [m/s],    default: 35, zonal wind speed
+)
+
+const PARAMETER_DEFAULTS = [1, 0, 1, -80, 40.45, 300, 273, 0, 0, 35]
+
+function max_precipitation(parameters::AbstractVector)
+    parameter_tuple = NamedTuple{PARAMETER_KEYS}(parameters)
+    return max_precipitation(parameter_tuple)
+end
+
+function max_precipitation(parameters::NamedTuple)
+
+    # define resolution. Use trunc=42, 63, 85, 127, ... for higher resolution, cubically slower
+    spectral_grid = SpectralGrid(trunc=31, nlayers=8)
+
+    # Define AquaPlanet ocean, for idealised sea surface temperatures
+    # but don&#39;t change land-sea mask = retain real ocean basins
+    ocean = AquaPlanet(spectral_grid,
+                temp_equator=parameters.temperature_equator,
+                temp_poles=parameters.temperature_pole)
+
+    land_temperature = ConstantLandTemperature(spectral_grid)
+    land = LandModel(spectral_grid; temperature=land_temperature)
+
+    initial_conditions = InitialConditions(
+        vordiv = ZonalWind(u₀=parameters.zonal_wind),
+        temp = JablonowskiTemperature(u₀=parameters.zonal_wind),
+        pres = PressureOnOrography(),
+        humid = ConstantRelativeHumidity())
+
+    orography = EarthOrography(spectral_grid, scale=parameters.orography_scale)
+
+    # construct model
+    model = PrimitiveWetModel(spectral_grid; ocean, land, initial_conditions, orography)
+
+    # Add rain gauge, locate in Pittsburgh PA
+    rain_gauge = RainGauge(spectral_grid, lond=-80, latd=40.45)
+    add!(model, rain_gauge)
+
+    # Initialize
+    simulation = initialize!(model, time=DateTime(2025, 7, 22))
+
+    # Add additional  mountain
+    H = parameters.mountain_height
+    λ₀, φ₀, σ = parameters.mountain_lon, parameters.mountain_lat, parameters.mountain_size
+    set!(model, orography=(λ,φ) -&gt; H*exp(-spherical_distance((λ,φ), (λ₀,φ₀), radius=360/2π)^2/2σ^2), add=true)
+
+    # land sea surface temperature anomalies
+    # 1. USA
+    set!(simulation, soil_temperature=
+        (λ, φ, k) -&gt; (30 &lt; φ &lt; 50) &amp;&amp; (240 &lt; λ &lt; 285) ? parameters.temperature_usa : 0, add=true)
+
+    # 2. Pennsylvania
+    A = parameters.temperature_pa
+    λ_az, φ_az, σ_az = -80, 40.45, 4    # location [˚], size [˚] of Azores
+    set!(simulation, soil_temperature=
+        (λ, φ, k) -&gt; A*exp(-spherical_distance((λ,φ), (λ_az,φ_az), radius=360/2π)^2/2σ_az^2), add=true)
+
+    # Run simulation for 20 days
+    run!(simulation, period=Day(20))
+
+    # skip first 5 days, as is done in the RainMaker challenge
+    RainMaker.skip!(rain_gauge, Day(5))
+
+    # evaluate rain gauge
+    lsc = rain_gauge.accumulated_rain_large_scale
+    conv = rain_gauge.accumulated_rain_convection
+    total_precip = maximum(lsc) + maximum(conv)
+    return rain_gauge, total_precip
+end
+
+best_params = [
+    1.680189,
+    240.442519,
+    10.640524,
+    166.748171,
+    60.635959,
+    256.528781,
+    268.849961,
+    18.577591,
+    19.591949,
+    30.854462,
+]
+
+rain_gauge, total_precip = max_precipitation(best_params)</code></pre><p><img src="../submission_anicusan_evoopt_unbounded.png" alt="submission: anicusan_evoopt_unbounded"/></p><h2 id="A-Nicusan:-Evo-opt-bounded"><a class="docs-heading-anchor" href="#A-Nicusan:-Evo-opt-bounded">A Nicusan: Evo opt bounded</a><a id="A-Nicusan:-Evo-opt-bounded-1"></a><a class="docs-heading-anchor-permalink" href="#A-Nicusan:-Evo-opt-bounded" title="Permalink"></a></h2><p>path: <code>/submissions/anicusan_evoopt_bounded.jl</code></p><p>rank: 2. of 14 submissions</p><pre><code class="language-julia hljs">author = &quot;A Nicusan&quot;
+description = &quot;Evo opt bounded&quot;
+
+using SpeedyWeather, RainMaker
+
+const PARAMETER_KEYS = (
+    :orography_scale,           # [1],      default: 1, scale of global orography
+    :mountain_height,           # [m],      default: 0, height of an additional mountain
+    :mountain_size,             # [˚],      default: 1, horizontal size of mountain
+    :mountain_lon,              # [˚E],     default: -80, longitude of that mountain
+    :mountain_lat,              # [˚N],     default: 40.45, latitude of that mountain
+    :temperature_equator,       # [K],      default: 300, sea surface temperature at the equator
+    :temperature_pole,          # [K],      default: 273, sea surfaec temperature at the poles
+    :temperature_usa,           # [K],      default: 0, land surface temperature anomaly over the USA
+    :temperature_pa,            # [K],      default: 0, land surface temperature anomaly in Pennsylvania
+    :zonal_wind,                # [m/s],    default: 35, zonal wind speed
+)
+
+const PARAMETER_DEFAULTS = [1, 0, 1, -80, 40.45, 300, 273, 0, 0, 35]
+
+function max_precipitation(parameters::AbstractVector)
+    parameter_tuple = NamedTuple{PARAMETER_KEYS}(parameters)
+    return max_precipitation(parameter_tuple)
+end
+
+function max_precipitation(parameters::NamedTuple)
+
+    # define resolution. Use trunc=42, 63, 85, 127, ... for higher resolution, cubically slower
+    spectral_grid = SpectralGrid(trunc=31, nlayers=8)
+
+    # Define AquaPlanet ocean, for idealised sea surface temperatures
+    # but don&#39;t change land-sea mask = retain real ocean basins
+    ocean = AquaPlanet(spectral_grid,
+                temp_equator=parameters.temperature_equator,
+                temp_poles=parameters.temperature_pole)
+
+    land_temperature = ConstantLandTemperature(spectral_grid)
+    land = LandModel(spectral_grid; temperature=land_temperature)
+
+    initial_conditions = InitialConditions(
+        vordiv = ZonalWind(u₀=parameters.zonal_wind),
+        temp = JablonowskiTemperature(u₀=parameters.zonal_wind),
+        pres = PressureOnOrography(),
+        humid = ConstantRelativeHumidity())
+
+    orography = EarthOrography(spectral_grid, scale=parameters.orography_scale)
+
+    # construct model
+    model = PrimitiveWetModel(spectral_grid; ocean, land, initial_conditions, orography)
+
+    # Add rain gauge, locate in Pittsburgh PA
+    rain_gauge = RainGauge(spectral_grid, lond=-80, latd=40.45)
+    add!(model, rain_gauge)
+
+    # Initialize
+    simulation = initialize!(model, time=DateTime(2025, 7, 22))
+
+    # Add additional  mountain
+    H = parameters.mountain_height
+    λ₀, φ₀, σ = parameters.mountain_lon, parameters.mountain_lat, parameters.mountain_size
+    set!(model, orography=(λ,φ) -&gt; H*exp(-spherical_distance((λ,φ), (λ₀,φ₀), radius=360/2π)^2/2σ^2), add=true)
+
+    # land sea surface temperature anomalies
+    # 1. USA
+    set!(simulation, soil_temperature=
+        (λ, φ, k) -&gt; (30 &lt; φ &lt; 50) &amp;&amp; (240 &lt; λ &lt; 285) ? parameters.temperature_usa : 0, add=true)
+
+    # 2. Pennsylvania
+    A = parameters.temperature_pa
+    λ_az, φ_az, σ_az = -80, 40.45, 4    # location [˚], size [˚] of Azores
+    set!(simulation, soil_temperature=
+        (λ, φ, k) -&gt; A*exp(-spherical_distance((λ,φ), (λ_az,φ_az), radius=360/2π)^2/2σ_az^2), add=true)
+
+    # Run simulation for 20 days
+    run!(simulation, period=Day(20))
+
+    # skip first 5 days, as is done in the RainMaker challenge
+    RainMaker.skip!(rain_gauge, Day(5))
+
+    # evaluate rain gauge
+    lsc = rain_gauge.accumulated_rain_large_scale
+    conv = rain_gauge.accumulated_rain_convection
+    total_precip = maximum(lsc) + maximum(conv)
+    return rain_gauge, total_precip
+end
+
+best_params = [
+    1.999196,
+    2304.509728,
+    14.889662,
+    74.446324,
+    -70.338707,
+    280.224610,
+    299.998274,
+    4.999593,
+    4.996833,
+    33.312800,
+]
+
+rain_gauge, total_precip = max_precipitation(best_params)</code></pre><p><img src="../submission_anicusan_evoopt_bounded.png" alt="submission: anicusan_evoopt_bounded"/></p><h2 id="Chris-Rackauckas:-Brute-Force-OptimizationBBO-DE"><a class="docs-heading-anchor" href="#Chris-Rackauckas:-Brute-Force-OptimizationBBO-DE">Chris Rackauckas: Brute Force OptimizationBBO DE</a><a id="Chris-Rackauckas:-Brute-Force-OptimizationBBO-DE-1"></a><a class="docs-heading-anchor-permalink" href="#Chris-Rackauckas:-Brute-Force-OptimizationBBO-DE" title="Permalink"></a></h2><p>path: <code>/submissions/chris_brute_force.jl</code></p><p>rank: 3. of 14 submissions</p><pre><code class="language-julia hljs">author = &quot;Chris Rackauckas&quot;
 description = &quot;Brute Force OptimizationBBO DE&quot;
 
 #=
@@ -112,7 +310,7 @@ final_params = [1.9851412873870289, 2485.737125917869, 14.118878320714353, 73.66
 
 rain_gauge, total_precip = max_precipitation(final_params)
 
-total_precip</code></pre><p><img src="../submission_chris_brute_force.png" alt="submission: chris_brute_force"/></p><h2 id="Anas:-NN-Surrogate"><a class="docs-heading-anchor" href="#Anas:-NN-Surrogate">Anas: NN Surrogate</a><a id="Anas:-NN-Surrogate-1"></a><a class="docs-heading-anchor-permalink" href="#Anas:-NN-Surrogate" title="Permalink"></a></h2><p>path: <code>/submissions/anas-nn_surrogate_v2.jl</code></p><p>rank: 2. of 12 submissions</p><pre><code class="language-julia hljs">author = &quot;Anas&quot;
+total_precip</code></pre><p><img src="../submission_chris_brute_force.png" alt="submission: chris_brute_force"/></p><h2 id="Anas:-NN-Surrogate"><a class="docs-heading-anchor" href="#Anas:-NN-Surrogate">Anas: NN Surrogate</a><a id="Anas:-NN-Surrogate-1"></a><a class="docs-heading-anchor-permalink" href="#Anas:-NN-Surrogate" title="Permalink"></a></h2><p>path: <code>/submissions/anas-nn_surrogate_v2.jl</code></p><p>rank: 4. of 14 submissions</p><pre><code class="language-julia hljs">author = &quot;Anas&quot;
 description = &quot;NN Surrogate&quot;
 
 using SpeedyWeather, RainMaker
@@ -213,7 +411,7 @@ final_params =
 
 rain_gauge, total_precip = max_precipitation(final_params)
 
-total_precip</code></pre><p><img src="../submission_anas-nn_surrogate_v2.png" alt="submission: anas-nn_surrogate_v2"/></p><h2 id="Anas:-200mm-RainMaker"><a class="docs-heading-anchor" href="#Anas:-200mm-RainMaker">Anas: 200mm+ RainMaker</a><a id="Anas:-200mm-RainMaker-1"></a><a class="docs-heading-anchor-permalink" href="#Anas:-200mm-RainMaker" title="Permalink"></a></h2><p>path: <code>/submissions/anas_submission.jl</code></p><p>rank: 3. of 12 submissions</p><pre><code class="language-julia hljs">author = &quot;Anas&quot;
+total_precip</code></pre><p><img src="../submission_anas-nn_surrogate_v2.png" alt="submission: anas-nn_surrogate_v2"/></p><h2 id="Anas:-200mm-RainMaker"><a class="docs-heading-anchor" href="#Anas:-200mm-RainMaker">Anas: 200mm+ RainMaker</a><a id="Anas:-200mm-RainMaker-1"></a><a class="docs-heading-anchor-permalink" href="#Anas:-200mm-RainMaker" title="Permalink"></a></h2><p>path: <code>/submissions/anas_submission.jl</code></p><p>rank: 5. of 14 submissions</p><pre><code class="language-julia hljs">author = &quot;Anas&quot;
 description = &quot;200mm+ RainMaker&quot;
 
 using SpeedyWeather, RainMaker
@@ -314,7 +512,7 @@ final_params =
 
 rain_gauge, total_precip = max_precipitation(final_params)
 
-total_precip</code></pre><p><img src="../submission_anas_submission.png" alt="submission: anas_submission"/></p><h2 id="Gabriel-Konar-Steenberg:-Brute-force-built-on-Anas-surrogate"><a class="docs-heading-anchor" href="#Gabriel-Konar-Steenberg:-Brute-force-built-on-Anas-surrogate">Gabriel Konar-Steenberg: Brute force built on Anas surrogate</a><a id="Gabriel-Konar-Steenberg:-Brute-force-built-on-Anas-surrogate-1"></a><a class="docs-heading-anchor-permalink" href="#Gabriel-Konar-Steenberg:-Brute-force-built-on-Anas-surrogate" title="Permalink"></a></h2><p>path: <code>/submissions/gabrielks_brute_force_1.jl</code></p><p>rank: 4. of 12 submissions</p><pre><code class="language-julia hljs">author = &quot;Gabriel Konar-Steenberg&quot;
+total_precip</code></pre><p><img src="../submission_anas_submission.png" alt="submission: anas_submission"/></p><h2 id="Gabriel-Konar-Steenberg:-Brute-force-built-on-Anas-surrogate"><a class="docs-heading-anchor" href="#Gabriel-Konar-Steenberg:-Brute-force-built-on-Anas-surrogate">Gabriel Konar-Steenberg: Brute force built on Anas surrogate</a><a id="Gabriel-Konar-Steenberg:-Brute-force-built-on-Anas-surrogate-1"></a><a class="docs-heading-anchor-permalink" href="#Gabriel-Konar-Steenberg:-Brute-force-built-on-Anas-surrogate" title="Permalink"></a></h2><p>path: <code>/submissions/gabrielks_brute_force_1.jl</code></p><p>rank: 6. of 14 submissions</p><pre><code class="language-julia hljs">author = &quot;Gabriel Konar-Steenberg&quot;
 description = &quot;Brute force built on Anas surrogate&quot;
 
 using SpeedyWeather, RainMaker
@@ -500,7 +698,7 @@ final_params =
 
 rain_gauge, total_precip = max_precipitation(final_params)
 
-total_precip  # produces 212.7933 on RainMakerChallenge2025.jl&#39;s evaluator, 211.040 on this evaluator -- TODO investigate the discrepancy</code></pre><p><img src="../submission_gabrielks_brute_force_1.png" alt="submission: gabrielks_brute_force_1"/></p><h2 id="Theo-D:-Kriging-Surrogate-with-Latin-Hypercube-Sampling"><a class="docs-heading-anchor" href="#Theo-D:-Kriging-Surrogate-with-Latin-Hypercube-Sampling">Theo D: Kriging Surrogate with Latin Hypercube Sampling</a><a id="Theo-D:-Kriging-Surrogate-with-Latin-Hypercube-Sampling-1"></a><a class="docs-heading-anchor-permalink" href="#Theo-D:-Kriging-Surrogate-with-Latin-Hypercube-Sampling" title="Permalink"></a></h2><p>path: <code>/submissions/theo_juliacon.jl</code></p><p>rank: 5. of 12 submissions</p><pre><code class="language-julia hljs">author = &quot;Theo D&quot;
+total_precip  # produces 212.7933 on RainMakerChallenge2025.jl&#39;s evaluator, 211.040 on this evaluator -- TODO investigate the discrepancy</code></pre><p><img src="../submission_gabrielks_brute_force_1.png" alt="submission: gabrielks_brute_force_1"/></p><h2 id="Theo-D:-Kriging-Surrogate-with-Latin-Hypercube-Sampling"><a class="docs-heading-anchor" href="#Theo-D:-Kriging-Surrogate-with-Latin-Hypercube-Sampling">Theo D: Kriging Surrogate with Latin Hypercube Sampling</a><a id="Theo-D:-Kriging-Surrogate-with-Latin-Hypercube-Sampling-1"></a><a class="docs-heading-anchor-permalink" href="#Theo-D:-Kriging-Surrogate-with-Latin-Hypercube-Sampling" title="Permalink"></a></h2><p>path: <code>/submissions/theo_juliacon.jl</code></p><p>rank: 7. of 14 submissions</p><pre><code class="language-julia hljs">author = &quot;Theo D&quot;
 description = &quot;Kriging Surrogate with Latin Hypercube Sampling&quot;
 
 #=
@@ -639,7 +837,7 @@ final_params = [1.9728003644919363, 2506.981756969998, 10.799751688314835, -119.
 
 rain_gauge, total_precip = max_precipitation(final_params)
 
-total_precip</code></pre><p><img src="../submission_theo_juliacon.png" alt="submission: theo_juliacon"/></p><h2 id="Cameron-Bieganek:-Latin-hypercube-search,-no-surrogate."><a class="docs-heading-anchor" href="#Cameron-Bieganek:-Latin-hypercube-search,-no-surrogate.">Cameron Bieganek: Latin hypercube search, no surrogate.</a><a id="Cameron-Bieganek:-Latin-hypercube-search,-no-surrogate.-1"></a><a class="docs-heading-anchor-permalink" href="#Cameron-Bieganek:-Latin-hypercube-search,-no-surrogate." title="Permalink"></a></h2><p>path: <code>/submissions/bieganek_latin_hypercube.jl</code></p><p>rank: 6. of 12 submissions</p><pre><code class="language-julia hljs">author = &quot;Cameron Bieganek&quot;
+total_precip</code></pre><p><img src="../submission_theo_juliacon.png" alt="submission: theo_juliacon"/></p><h2 id="Cameron-Bieganek:-Latin-hypercube-search,-no-surrogate."><a class="docs-heading-anchor" href="#Cameron-Bieganek:-Latin-hypercube-search,-no-surrogate.">Cameron Bieganek: Latin hypercube search, no surrogate.</a><a id="Cameron-Bieganek:-Latin-hypercube-search,-no-surrogate.-1"></a><a class="docs-heading-anchor-permalink" href="#Cameron-Bieganek:-Latin-hypercube-search,-no-surrogate." title="Permalink"></a></h2><p>path: <code>/submissions/bieganek_latin_hypercube.jl</code></p><p>rank: 8. of 14 submissions</p><pre><code class="language-julia hljs">author = &quot;Cameron Bieganek&quot;
 description = &quot;Latin hypercube search, no surrogate.&quot;
 
 #=
@@ -758,7 +956,7 @@ final_params = [
 
 rain_gauge, total_precip = max_precipitation(final_params)
 
-total_precip</code></pre><p><img src="../submission_bieganek_latin_hypercube.png" alt="submission: bieganek_latin_hypercube"/></p><h2 id="Chris-Rackauckas:-Evotrees.jl-Surrogate,-Claude-generated"><a class="docs-heading-anchor" href="#Chris-Rackauckas:-Evotrees.jl-Surrogate,-Claude-generated">Chris Rackauckas: Evotrees.jl Surrogate, Claude generated</a><a id="Chris-Rackauckas:-Evotrees.jl-Surrogate,-Claude-generated-1"></a><a class="docs-heading-anchor-permalink" href="#Chris-Rackauckas:-Evotrees.jl-Surrogate,-Claude-generated" title="Permalink"></a></h2><p>path: <code>/submissions/chris_evotrees.jl</code></p><p>rank: 7. of 12 submissions</p><pre><code class="language-julia hljs">author = &quot;Chris Rackauckas&quot;
+total_precip</code></pre><p><img src="../submission_bieganek_latin_hypercube.png" alt="submission: bieganek_latin_hypercube"/></p><h2 id="Chris-Rackauckas:-Evotrees.jl-Surrogate,-Claude-generated"><a class="docs-heading-anchor" href="#Chris-Rackauckas:-Evotrees.jl-Surrogate,-Claude-generated">Chris Rackauckas: Evotrees.jl Surrogate, Claude generated</a><a id="Chris-Rackauckas:-Evotrees.jl-Surrogate,-Claude-generated-1"></a><a class="docs-heading-anchor-permalink" href="#Chris-Rackauckas:-Evotrees.jl-Surrogate,-Claude-generated" title="Permalink"></a></h2><p>path: <code>/submissions/chris_evotrees.jl</code></p><p>rank: 9. of 14 submissions</p><pre><code class="language-julia hljs">author = &quot;Chris Rackauckas&quot;
 description = &quot;Evotrees.jl Surrogate, Claude generated&quot;
 
 #=
@@ -898,7 +1096,7 @@ final_params = [1.99, -1494.66, 0.44, -175.36, -84.63, 274.32, 277.01, 4.70,
 
 rain_gauge, total_precip = max_precipitation(final_params)
 
-total_precip</code></pre><p><img src="../submission_chris_evotrees.png" alt="submission: chris_evotrees"/></p><h2 id="Shirin-Ermis:-Aqua-planet-simulation-with-a-mountain"><a class="docs-heading-anchor" href="#Shirin-Ermis:-Aqua-planet-simulation-with-a-mountain">Shirin Ermis: Aqua-planet simulation with a mountain</a><a id="Shirin-Ermis:-Aqua-planet-simulation-with-a-mountain-1"></a><a class="docs-heading-anchor-permalink" href="#Shirin-Ermis:-Aqua-planet-simulation-with-a-mountain" title="Permalink"></a></h2><p>path: <code>/submissions/aquaplanet_mountain.jl</code></p><p>rank: 8. of 12 submissions</p><pre><code class="language-julia hljs">author = &quot;Shirin Ermis&quot;
+total_precip</code></pre><p><img src="../submission_chris_evotrees.png" alt="submission: chris_evotrees"/></p><h2 id="Shirin-Ermis:-Aqua-planet-simulation-with-a-mountain"><a class="docs-heading-anchor" href="#Shirin-Ermis:-Aqua-planet-simulation-with-a-mountain">Shirin Ermis: Aqua-planet simulation with a mountain</a><a id="Shirin-Ermis:-Aqua-planet-simulation-with-a-mountain-1"></a><a class="docs-heading-anchor-permalink" href="#Shirin-Ermis:-Aqua-planet-simulation-with-a-mountain" title="Permalink"></a></h2><p>path: <code>/submissions/aquaplanet_mountain.jl</code></p><p>rank: 10. of 14 submissions</p><pre><code class="language-julia hljs">author = &quot;Shirin Ermis&quot;
 description = &quot;Aqua-planet simulation with a mountain&quot;
 
 using SpeedyWeather, RainMaker
@@ -928,7 +1126,7 @@ run!(simulation, period=Day(20))
 # Plot the results (not needed for submission but doesn&#39;t hurt!)
 using CairoMakie
 # heatmap(model.orography.orography, title=&quot;My orogoraphy [m]&quot;) # check orography
-RainMaker.plot(rain_gauge, rate_Δt=Hour(1))</code></pre><p><img src="../submission_aquaplanet_mountain.png" alt="submission: aquaplanet_mountain"/></p><h2 id="Milan:-Aquaplanet"><a class="docs-heading-anchor" href="#Milan:-Aquaplanet">Milan: Aquaplanet</a><a id="Milan:-Aquaplanet-1"></a><a class="docs-heading-anchor-permalink" href="#Milan:-Aquaplanet" title="Permalink"></a></h2><p>path: <code>/submissions/aquaplanet.jl</code></p><p>rank: 9. of 12 submissions</p><pre><code class="language-julia hljs">author = &quot;Milan&quot;
+RainMaker.plot(rain_gauge, rate_Δt=Hour(1))</code></pre><p><img src="../submission_aquaplanet_mountain.png" alt="submission: aquaplanet_mountain"/></p><h2 id="Milan:-Aquaplanet"><a class="docs-heading-anchor" href="#Milan:-Aquaplanet">Milan: Aquaplanet</a><a id="Milan:-Aquaplanet-1"></a><a class="docs-heading-anchor-permalink" href="#Milan:-Aquaplanet" title="Permalink"></a></h2><p>path: <code>/submissions/aquaplanet.jl</code></p><p>rank: 11. of 14 submissions</p><pre><code class="language-julia hljs">author = &quot;Milan&quot;
 description = &quot;Aquaplanet&quot;
 
 using SpeedyWeather, RainMaker
@@ -945,7 +1143,7 @@ rain_gauge = RainGauge(spectral_grid, lond=-80, latd=40.45)
 add!(model, rain_gauge)
 
 simulation = initialize!(model)
-run!(simulation, period=Day(20))</code></pre><p><img src="../submission_aquaplanet.png" alt="submission: aquaplanet"/></p><h2 id="Tim-Reichelt:-North-Sea-mountain"><a class="docs-heading-anchor" href="#Tim-Reichelt:-North-Sea-mountain">Tim Reichelt: North Sea mountain</a><a id="Tim-Reichelt:-North-Sea-mountain-1"></a><a class="docs-heading-anchor-permalink" href="#Tim-Reichelt:-North-Sea-mountain" title="Permalink"></a></h2><p>path: <code>/submissions/north_sea_mountain.jl</code></p><p>rank: 10. of 12 submissions</p><pre><code class="language-julia hljs">author = &quot;Tim Reichelt&quot;
+run!(simulation, period=Day(20))</code></pre><p><img src="../submission_aquaplanet.png" alt="submission: aquaplanet"/></p><h2 id="Tim-Reichelt:-North-Sea-mountain"><a class="docs-heading-anchor" href="#Tim-Reichelt:-North-Sea-mountain">Tim Reichelt: North Sea mountain</a><a id="Tim-Reichelt:-North-Sea-mountain-1"></a><a class="docs-heading-anchor-permalink" href="#Tim-Reichelt:-North-Sea-mountain" title="Permalink"></a></h2><p>path: <code>/submissions/north_sea_mountain.jl</code></p><p>rank: 12. of 14 submissions</p><pre><code class="language-julia hljs">author = &quot;Tim Reichelt&quot;
 description = &quot;North Sea mountain&quot;
 
 using SpeedyWeather, RainMaker
@@ -963,7 +1161,7 @@ simulation = initialize!(model)
 H, λ₀, φ₀, σ = 4000, 2, 51, 5     # height, lon, lat position, and width
 set!(model, orography=(λ,φ) -&gt; H*exp(-spherical_distance((λ,φ), (λ₀,φ₀), radius=360/2π)^2/2σ^2))
 
-run!(simulation, period=Day(20))</code></pre><p><img src="../submission_north_sea_mountain.png" alt="submission: north_sea_mountain"/></p><h2 id="Milan:-default"><a class="docs-heading-anchor" href="#Milan:-default">Milan: default</a><a id="Milan:-default-1"></a><a class="docs-heading-anchor-permalink" href="#Milan:-default" title="Permalink"></a></h2><p>path: <code>/submissions/default.jl</code></p><p>rank: 11. of 12 submissions</p><pre><code class="language-julia hljs">author = &quot;Milan&quot;
+run!(simulation, period=Day(20))</code></pre><p><img src="../submission_north_sea_mountain.png" alt="submission: north_sea_mountain"/></p><h2 id="Milan:-default"><a class="docs-heading-anchor" href="#Milan:-default">Milan: default</a><a id="Milan:-default-1"></a><a class="docs-heading-anchor-permalink" href="#Milan:-default" title="Permalink"></a></h2><p>path: <code>/submissions/default.jl</code></p><p>rank: 13. of 14 submissions</p><pre><code class="language-julia hljs">author = &quot;Milan&quot;
 description = &quot;default&quot;
 
 using SpeedyWeather, RainMaker
@@ -975,7 +1173,7 @@ rain_gauge = RainGauge(spectral_grid, lond=-80, latd=40.45)
 add!(model, rain_gauge)
 
 simulation = initialize!(model)
-run!(simulation, period=Day(20))</code></pre><p><img src="../submission_default.png" alt="submission: default"/></p><h2 id="Milan:-Atlantic-mountain"><a class="docs-heading-anchor" href="#Milan:-Atlantic-mountain">Milan: Atlantic mountain</a><a id="Milan:-Atlantic-mountain-1"></a><a class="docs-heading-anchor-permalink" href="#Milan:-Atlantic-mountain" title="Permalink"></a></h2><p>path: <code>/submissions/atlantic_mountain.jl</code></p><p>rank: 12. of 12 submissions</p><pre><code class="language-julia hljs">author = &quot;Milan&quot;
+run!(simulation, period=Day(20))</code></pre><p><img src="../submission_default.png" alt="submission: default"/></p><h2 id="Milan:-Atlantic-mountain"><a class="docs-heading-anchor" href="#Milan:-Atlantic-mountain">Milan: Atlantic mountain</a><a id="Milan:-Atlantic-mountain-1"></a><a class="docs-heading-anchor-permalink" href="#Milan:-Atlantic-mountain" title="Permalink"></a></h2><p>path: <code>/submissions/atlantic_mountain.jl</code></p><p>rank: 14. of 14 submissions</p><pre><code class="language-julia hljs">author = &quot;Milan&quot;
 description = &quot;Atlantic mountain&quot;
 
 using SpeedyWeather, RainMaker
@@ -992,4 +1190,4 @@ simulation = initialize!(model)
 H, λ₀, φ₀, σ = 4000, 325, 50, 5     # height, lon, lat position, and width
 set!(model, orography=(λ,φ) -&gt; H*exp((-(λ-λ₀)^2 - (φ-φ₀)^2)/2σ^2), add=true)
 
-run!(simulation, period=Day(20))</code></pre><p><img src="../submission_atlantic_mountain.png" alt="submission: atlantic_mountain"/></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../leaderboard/">« Leaderboard</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.14.1 on <span class="colophon-date" title="Thursday 24 July 2025 07:57">Thursday 24 July 2025</span>. Using Julia version 1.11.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+run!(simulation, period=Day(20))</code></pre><p><img src="../submission_atlantic_mountain.png" alt="submission: atlantic_mountain"/></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../leaderboard/">« Leaderboard</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.14.1 on <span class="colophon-date" title="Tuesday 29 July 2025 14:57">Tuesday 29 July 2025</span>. Using Julia version 1.11.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
