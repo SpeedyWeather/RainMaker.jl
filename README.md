@@ -76,11 +76,13 @@ Leaderboards and corresponding versions of RainMaker.jl are
 
 ## Installation
 
-[Install Julia](https://julialang.org/downloads/#install_julia). Then, RainMaker.jl is a registered package, in the Julia REPL simply do
+[Install Julia](https://julialang.org/downloads/#install_julia). Then, RainMaker.jl is a registered package,
+in the Julia REPL simply do
 ```julia
 julia> ] add SpeedyWeather, RainMaker
 ```
-where `]` opens the package manager (the prompt changes to `(@v1.11) pkg>`). Alternatively, you can do `using Pkg; Pkg.add(["SpeedyWeather", "RainMaker"])`
-to import the package manager `Pkg` and then to add the `RainMaker` and `SpeedyWeather` package. You can install
-just RainMaker and SpeedyWeather will be installed automatically, but in most cases you need SpeedyWeather explicitly
-anyway.
+where `]` opens the package manager (the prompt changes to `(@v1.11) pkg>`).
+Alternatively, you can do `using Pkg; Pkg.add(["SpeedyWeather", "RainMaker"])`
+to import the package manager `Pkg` and then to add the `RainMaker` and `SpeedyWeather` package.
+You can install just RainMaker and SpeedyWeather will be installed automatically,
+but in most cases you need SpeedyWeather explicitly anyway.
