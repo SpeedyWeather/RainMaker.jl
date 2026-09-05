@@ -48,8 +48,8 @@ end
 
 function max_precipitation(parameters::NamedTuple)
 
-    # define resolution. Use trunc=42, 63, 85, 127, ... for higher resolution, cubically slower
-    spectral_grid = SpectralGrid(trunc=31, nlayers=8)
+    # define resolution. Use truncation=64, 96, 128, 192, ... for higher resolution, cubically slower
+    spectral_grid = SpectralGrid(truncation=32, nlayers=8)
 
     # Define AquaPlanet ocean, for idealised sea surface temperatures
     # but don't change land-sea mask = retain real ocean basins

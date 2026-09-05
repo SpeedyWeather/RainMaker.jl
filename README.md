@@ -23,7 +23,7 @@ In short,
 using SpeedyWeather, RainMaker
 
 # create a model
-spectral_grid = SpectralGrid(trunc=31, nlayers=8)
+spectral_grid = SpectralGrid(truncation=32, nlayers=8)
 model = PrimitiveWetModel(spectral_grid)
 
 # add the rain gauge as callback

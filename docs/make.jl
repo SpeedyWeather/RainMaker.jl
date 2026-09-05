@@ -20,16 +20,17 @@ function run_submission(path::String)
     RainMaker.skip!(rain_gauge, SKIP_START)
 
     # analyse/evaluate, skip first five days of measurements
-    lsc = rain_gauge.accumulated_rain_large_scale
     conv = rain_gauge.accumulated_rain_convection
+    snow = rain_gauge.accumulated_snow_large_scale
 
-    total_precip = maximum(lsc) + maximum(conv)
+    total_precip = maximum_precipitation(rain_gauge)
     submission_dict = Dict(
         "author" => author,
         "description" => description,
         "location" => (rain_gauge.lond, rain_gauge.latd),
         "total precipitation" => total_precip,
         "convection share" => maximum(conv) / total_precip,
+        "snow share" => maximum(snow) / total_precip,
         "period" => Second(rain_gauge.measurement_counter*rain_gauge.Δt) - Second(SKIP_START),
         "path" => path,
         "code" => read(path, String),
@@ -117,8 +118,9 @@ open(joinpath(@__DIR__, "src/leaderboard.md"), "w") do mdfile
                 location = @sprintf("%.2f˚N, %.2f˚E", loc[2], loc[1])
                 total_precip = @sprintf("%.3f", dict["total precipitation"])
                 convection_share = @sprintf("%.1f", 100*dict["convection share"])
+                snow_share = @sprintf("%.1f", 100*dict["snow share"])
                 n_days = @sprintf("%d", Second(dict["period"]).value / 24 / 3600)   # rounded
-                println(mdfile, "| $rank | $author | $description | $location | $total_precip | $convection_share | $n_days |")
+                println(mdfile, "| $rank | $author | $description | $location | $total_precip | $convection_share | $snow_share | $n_days |")
             end
         end
     end
