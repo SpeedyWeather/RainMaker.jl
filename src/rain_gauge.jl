@@ -6,9 +6,11 @@ const DEFAULT_PERIOD = Dates.Day(20)
 
 export RainGauge
 
-"""Measures convective and large-scale rain as well as large-scale snow
-across time at one given location with linear interpolation from model
-grids onto `lond`, `latd`. Fields are
+"""Measures convective and large-scale rain and snow across time at
+one given location with linear interpolation from model grids onto
+`lond`, `latd`. Precipitation types that the model does not define
+(e.g. convective snow with older SpeedyWeather versions, or any
+precipitation in a dry model) are measured as zero. Fields are
 $(TYPEDFIELDS)"""
 @kwdef mutable struct RainGauge{NF, Interpolator} <: SpeedyWeather.AbstractCallback
 
@@ -44,6 +46,9 @@ $(TYPEDFIELDS)"""
     """Accumulated large-scale snow [mm] in the simulation at the beginning of rain gauge measurements."""
     accumulated_snow_large_scale_start::NF = 0
 
+    """Accumulated convective snow [mm] in the simulation at the beginning of rain gauge measurements."""
+    accumulated_snow_convection_start::NF = 0
+
     """Accumulated large-scale rain [mm]."""
     accumulated_rain_large_scale::Vector{NF} = zeros(NF, max_measurements)
 
@@ -52,6 +57,9 @@ $(TYPEDFIELDS)"""
 
     """Accumulated large-scale snow [mm], as liquid water equivalent."""
     accumulated_snow_large_scale::Vector{NF} = zeros(NF, max_measurements)
+
+    """Accumulated convective snow [mm], as liquid water equivalent."""
+    accumulated_snow_convection::Vector{NF} = zeros(NF, max_measurements)
 end
 
 # use number format NF from spectral grid if not provided
@@ -81,6 +89,7 @@ function Base.show(io::IO, gauge::RainGauge{T}) where T
     println(io, "├ accumulated_rain_large_scale::Vector{$T}, maximum: $(maximum(gauge.accumulated_rain_large_scale)) mm")
     println(io, "├ accumulated_rain_convection::Vector{$T}, maximum: $(maximum(gauge.accumulated_rain_convection)) mm")
     println(io, "├ accumulated_snow_large_scale::Vector{$T}, maximum: $(maximum(gauge.accumulated_snow_large_scale)) mm")
+    println(io, "├ accumulated_snow_convection::Vector{$T}, maximum: $(maximum(gauge.accumulated_snow_convection)) mm")
 
     total_precip_str = Printf.@sprintf("%.3f", maximum_precipitation(gauge))
     print(io,   "└ accumulated total precipitation: $total_precip_str mm")
@@ -90,12 +99,13 @@ export maximum_precipitation
 
 """$(TYPEDSIGNATURES)
 Total accumulated precipitation [mm] measured by `gauge`, i.e. the sum of
-large-scale rain, convective rain and large-scale snow (as liquid water
-equivalent) at the last measurement."""
+large-scale and convective rain and snow (snow as liquid water equivalent)
+at the last measurement."""
 function maximum_precipitation(gauge::RainGauge)
     return maximum(gauge.accumulated_rain_large_scale) +
         maximum(gauge.accumulated_rain_convection) +
-        maximum(gauge.accumulated_snow_large_scale)
+        maximum(gauge.accumulated_snow_large_scale) +
+        maximum(gauge.accumulated_snow_convection)
 end
 
 """$(TYPEDSIGNATURES)
@@ -120,13 +130,15 @@ function reset!(gauge::RainGauge)
     fill!(gauge.accumulated_rain_convection, 0)
     fill!(gauge.accumulated_rain_large_scale, 0)
     fill!(gauge.accumulated_snow_large_scale, 0)
+    fill!(gauge.accumulated_snow_convection, 0)
     return gauge
 end
 
 """$(TYPEDSIGNATURES)
 Interpolate the accumulated precipitation variable `name` (e.g. `:rain_large_scale`)
 from `vars.parameterizations` onto the location of `gauge`. Returns 0 if the model
-does not define that variable, e.g. a dry model without large-scale condensation."""
+does not define that variable, e.g. a dry model without large-scale condensation,
+or a SpeedyWeather version that does not diagnose convective snow yet."""
 function measure(gauge::RainGauge{NF}, vars::SpeedyWeather.Variables, name::Symbol) where NF
     haskey(vars.parameterizations, name) || return zero(NF)
     precip = zeros(NF, 1)   # interpolate! requires a vector
@@ -149,6 +161,7 @@ function reset!(
     gauge.accumulated_rain_large_scale_start = measure(gauge, vars, :rain_large_scale)
     gauge.accumulated_rain_convection_start = measure(gauge, vars, :rain_convection)
     gauge.accumulated_snow_large_scale_start = measure(gauge, vars, :snow_large_scale)
+    gauge.accumulated_snow_convection_start = measure(gauge, vars, :snow_convection)
 
     return nothing
 end
@@ -172,21 +185,25 @@ function skip!(rain_gauge::RainGauge, period::Dates.Period)
 
     lsc = rain_gauge.accumulated_rain_large_scale
     conv = rain_gauge.accumulated_rain_convection
-    snow = rain_gauge.accumulated_snow_large_scale
+    snow_lsc = rain_gauge.accumulated_snow_large_scale
+    snow_conv = rain_gauge.accumulated_snow_convection
 
     lsc0 = lsc[i]       # values that we will normalize with
     conv0 = conv[i]
-    snow0 = snow[i]
+    snow_lsc0 = snow_lsc[i]
+    snow_conv0 = snow_conv[i]
 
     # set the start values first which are used in case the rain gauge is started after the simulation
     rain_gauge.accumulated_rain_large_scale_start -= lsc0
     rain_gauge.accumulated_rain_convection_start -= conv0
-    rain_gauge.accumulated_snow_large_scale_start -= snow0
+    rain_gauge.accumulated_snow_large_scale_start -= snow_lsc0
+    rain_gauge.accumulated_snow_convection_start -= snow_conv0
 
     # normalize, only the range of values that have already been measured
     lsc[1:rain_gauge.measurement_counter] .-= lsc0
     conv[1:rain_gauge.measurement_counter] .-= conv0
-    snow[1:rain_gauge.measurement_counter] .-= snow0
+    snow_lsc[1:rain_gauge.measurement_counter] .-= snow_lsc0
+    snow_conv[1:rain_gauge.measurement_counter] .-= snow_conv0
 
     return rain_gauge
 end
@@ -200,7 +217,7 @@ end
 
 """$(TYPEDSIGNATURES)
 Callback definition for `gauge::RainGauge` from `RainMaker.jl`.
-Interpolates large-scale and convective rain as well as large-scale snow
+Interpolates large-scale and convective rain and snow
 to the gauge's storage vectors and converts units from m to mm. Stops measuring if the
 `max_measurements` are reached which is printed only once as info."""
 function SpeedyWeather.callback!(
@@ -223,6 +240,8 @@ function SpeedyWeather.callback!(
         (measure(gauge, vars, :rain_convection) - gauge.accumulated_rain_convection_start)*m2mm
     gauge.accumulated_snow_large_scale[i] =
         (measure(gauge, vars, :snow_large_scale) - gauge.accumulated_snow_large_scale_start)*m2mm
+    gauge.accumulated_snow_convection[i] =
+        (measure(gauge, vars, :snow_convection) - gauge.accumulated_snow_convection_start)*m2mm
 
     # print info that max time steps is reached only once
     if gauge.measurement_counter == gauge.max_measurements
@@ -236,8 +255,8 @@ SpeedyWeather.finalize!(gauge::RainGauge, args...) = nothing
 
 """$(TYPEDSIGNATURES)
 Plot accumulated precipitation and precipitation rate across time for
-`gauge::RainGauge` from `RainMaker.jl`. Large-scale rain, convective rain
-and large-scale snow are stacked. `rate_Δt` specifies the interval
+`gauge::RainGauge` from `RainMaker.jl`. Large-scale rain, convective rain,
+large-scale snow and convective snow are stacked. `rate_Δt` specifies the interval
 used to bin the precipitation rate, while units are always converted to
 mm/day. Default is 6 hours."""
 function plot(
@@ -270,16 +289,24 @@ function plot(
     # range of recorded precipitation only
     lsca = gauge.accumulated_rain_large_scale[1:gauge.measurement_counter]
     conv = gauge.accumulated_rain_convection[1:gauge.measurement_counter]
-    snow = gauge.accumulated_snow_large_scale[1:gauge.measurement_counter]
+    snow_lsc = gauge.accumulated_snow_large_scale[1:gauge.measurement_counter]
+    snow_conv = gauge.accumulated_snow_convection[1:gauge.measurement_counter]
+
+    # cumulative sums to stack the four components on top of each other
+    stack1 = lsca
+    stack2 = stack1 + conv
+    stack3 = stack2 + snow_lsc
+    stack4 = stack3 + snow_conv
 
     # band/fillbetween plot, but stack them
-    band!(ax1, t, 0, lsca, label="large-scale condensation (rain)", color=:skyblue, alpha=0.8)
-    band!(ax1, t, lsca, conv+lsca, label="convection (rain)", color=:purple3, alpha=0.8)
-    band!(ax1, t, conv+lsca, snow+conv+lsca, label="large-scale condensation (snow)", color=:aliceblue, alpha=0.8)
+    band!(ax1, t, 0, stack1, label="large-scale condensation (rain)", color=:skyblue, alpha=0.8)
+    band!(ax1, t, stack1, stack2, label="convection (rain)", color=:purple3, alpha=0.8)
+    band!(ax1, t, stack2, stack3, label="large-scale condensation (snow)", color=:aliceblue, alpha=0.8)
+    band!(ax1, t, stack3, stack4, label="convection (snow)", color=:plum, alpha=0.8)
 
     # also plot total precipitation and add last value to legend
     max_precip = Printf.@sprintf("%.3f", maximum_precipitation(gauge))
-    lines!(ax1, t, snow+conv+lsca, label="total: $max_precip mm", color=:black, alpha=0.8)
+    lines!(ax1, t, stack4, label="total: $max_precip mm", color=:black, alpha=0.8)
 
     # add dashed line to indicate skipped days
     if skip > Second(0)
@@ -296,17 +323,20 @@ function plot(
     mm2mmday = Day(1)/(s*Second(gauge.Δt))
     lsc0 = gauge.accumulated_rain_large_scale_start
     conv0 = gauge.accumulated_rain_convection_start
-    snow0 = gauge.accumulated_snow_large_scale_start
+    snow_lsc0 = gauge.accumulated_snow_large_scale_start
+    snow_conv0 = gauge.accumulated_snow_convection_start
     lsca_rate = diff(vcat(lsc0, lsca[s:s:end]))*mm2mmday
     conv_rate = diff(vcat(conv0, conv[s:s:end]))*mm2mmday
-    snow_rate = diff(vcat(snow0, snow[s:s:end]))*mm2mmday
+    snow_lsc_rate = diff(vcat(snow_lsc0, snow_lsc[s:s:end]))*mm2mmday
+    snow_conv_rate = diff(vcat(snow_conv0, snow_conv[s:s:end]))*mm2mmday
     t_rate = t[s:s:end]     # also subset time vector
 
     # Makie's barplot requires stacked bars to be concatenated?!
     n = length(t_rate)
-    color = vcat(fill(:skyblue, n), fill(:purple3, n), fill(:aliceblue, n))
-    barplot!(ax2, vcat(t_rate, t_rate, t_rate), vcat(lsca_rate, conv_rate, snow_rate),
-        stack=vcat(fill(1, n), fill(2, n), fill(3, n)); color, alpha=0.8)
+    color = vcat(fill(:skyblue, n), fill(:purple3, n), fill(:aliceblue, n), fill(:plum, n))
+    barplot!(ax2, vcat(t_rate, t_rate, t_rate, t_rate),
+        vcat(lsca_rate, conv_rate, snow_lsc_rate, snow_conv_rate),
+        stack=vcat(fill(1, n), fill(2, n), fill(3, n), fill(4, n)); color, alpha=0.8)
 
     return fig
 end

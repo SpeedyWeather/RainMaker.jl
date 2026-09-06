@@ -21,7 +21,8 @@ function run_submission(path::String)
 
     # analyse/evaluate, skip first five days of measurements
     conv = rain_gauge.accumulated_rain_convection
-    snow = rain_gauge.accumulated_snow_large_scale
+    snow_conv = rain_gauge.accumulated_snow_convection
+    snow = rain_gauge.accumulated_snow_large_scale + rain_gauge.accumulated_snow_convection
 
     total_precip = maximum_precipitation(rain_gauge)
     submission_dict = Dict(
@@ -29,7 +30,7 @@ function run_submission(path::String)
         "description" => description,
         "location" => (rain_gauge.lond, rain_gauge.latd),
         "total precipitation" => total_precip,
-        "convection share" => maximum(conv) / total_precip,
+        "convection share" => (maximum(conv) + maximum(snow_conv)) / total_precip,
         "snow share" => maximum(snow) / total_precip,
         "period" => Second(rain_gauge.measurement_counter*rain_gauge.Δt) - Second(SKIP_START),
         "path" => path,
