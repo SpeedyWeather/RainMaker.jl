@@ -3,7 +3,7 @@ description = "Aquaplanet"
 
 using SpeedyWeather, RainMaker
 
-spectral_grid = SpectralGrid(trunc=31, nlayers=8)
+spectral_grid = SpectralGrid(truncation=32, nlayers=8)
 
 # define aquaplanet
 ocean = AquaPlanet(spectral_grid, temp_equator=302, temp_poles=273)

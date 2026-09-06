@@ -16,7 +16,7 @@ but in short there are 4 steps
 using SpeedyWeather
 
 # 1. define the resolution
-spectral_grid = SpectralGrid(trunc=31, nlayers=8)
+spectral_grid = SpectralGrid(truncation=32, nlayers=8)
 
 # 2. create a model
 model = PrimitiveWetModel(spectral_grid)
@@ -38,36 +38,37 @@ that is up to you to figure out.
 SpeedyWeather is a spectral model. That means it internally represents its variables
 as coefficients of horizontal waves on the sphere (the [_spherical harmonics_](https://en.wikipedia.org/wiki/Spherical_harmonics))
 up to a certain maximum wavenumber that is usually referred to as _truncation_.
-So for a truncation of 31, SpeedyWeather would resolve wavenumbers 0 to 31,
-but not 32 and larger. The higher the truncation the higher the resolution 
+So for `truncation=32`, SpeedyWeather would resolve wavenumbers 0 to 31,
+but not 32 and larger (note that `truncation` is 1-based, i.e. it counts the
+number of resolved wavenumbers including wavenumber 0). The higher the truncation the higher the resolution 
 and automatically chosen higher resolution of the grid. You control the resolution
-through the keyword argument `trunc` of the `SpectralGrid` object that defines
+through the keyword argument `truncation` of the `SpectralGrid` object that defines
 the resolution of a simulation
 
 ```@example instructions
 using SpeedyWeather
-spectral_grid =  SpectralGrid(trunc=42)
+spectral_grid =  SpectralGrid(truncation=42)
 ```
 
-Now change `trunc` (e.g. 31, 42, 63, 85, 127) and check what happens to
+Now change `truncation` (e.g. 32, 42, 64, 96, 128) and check what happens to
 precipitation when you run a simulation at that resolution. You can also change
 the number of vertical layers with the keyword argument `nlayers`, e.g.
 
 ```@example instructions
-spectral_grid =  SpectralGrid(trunc=31, nlayers=5)
+spectral_grid =  SpectralGrid(truncation=32, nlayers=5)
 ```
 
 Note however, that too many vertical layers can make the model unstable
 because of the (simpler) vertical advection that is used. This is not the place
 to elaborate on that, but just to warn you that `nlayers=100` is unlikely to "just work".
-Try to find out more generally, with changing `trunc` and `nlayers`
+Try to find out more generally, with changing `truncation` and `nlayers`
 
 - How does the grid spacing change?
 - How does the speed of the simulation change?
 
 Bonus question
 
-- Why 31, 42, 63, ... as given above? For more details see [Available horizontal resolutions](https://speedyweather.github.io/SpeedyWeather.jl/dev/spectral_transform/#Available-horizontal-resolutions) and [Matching spectral and grid resolution](https://speedyweather.github.io/SpeedyWeather.jl/dev/grids/#Matching-spectral-and-grid-resolution)
+- Why 32, 42, 64, ... as given above? For more details see [Available horizontal resolutions](https://speedyweather.github.io/SpeedyWeather.jl/dev/spectral_transform/#Available-horizontal-resolutions) and [Matching spectral and grid resolution](https://speedyweather.github.io/SpeedyWeather.jl/dev/grids/#Matching-spectral-and-grid-resolution)
 - How are the vertical layers spaced? Check `spectral_grid.vertical_coordinates` and read on [Sigma coordinates](https://speedyweather.github.io/SpeedyWeather.jl/dev/primitiveequation/#Sigma-coordinates)
 
 
@@ -78,14 +79,14 @@ many are still done in grid space. That's why people often call this method also
 You can control the grid through the argument `Grid`
 
 ```@example instructions
-spectral_grid =  SpectralGrid(trunc=31, Grid=FullGaussianGrid)
+spectral_grid =  SpectralGrid(truncation=32, Grid=FullGaussianGrid)
 ```
 
 Try `FullGaussianGrid`, `FullClenshawGrid`, `OctahedralGaussianGrid`, or `HEALPixGrid`
 among [others](https://speedyweather.github.io/SpeedyWeather.jl/dev/grids/). Do they
 have any impact on the simulated precipitation? More generally
 
-- Which grids have more, which fewer (horizontal) grid points at a given `trunc`?
+- Which grids have more, which fewer (horizontal) grid points at a given `truncation`?
 - On each grid, are the grid cells globally of similar size or not?
 - [Visualise](https://speedyweather.github.io/SpeedyWeather.jl/dev/grids/#Interactively-exploring-the-grids) the grids!
 
@@ -101,11 +102,11 @@ needs to know the spatial resolution to pick a time step by default that is stab
 SpeedyWeather's time integration is based on the `Leapfrog` scheme, so you create such a component like this
 
 ```@example instructions
-time_stepping = Leapfrog(spectral_grid, Δt_at_T31=Minute(20))
+time_stepping = Leapfrog(spectral_grid, Δt_at_T32=Minute(20))
 ```
 
-where the argument `Δt_at_T31` determines the timestep `Δt` (write `\Delta` then hit tab) relative to a truncation of
-31 (called T31), the actual time step is then in `Δt_sec`, scaled linearly from T31 to whatever resolution you chose.
+where the argument `Δt_at_T32` determines the timestep `Δt` (write `\Delta` then hit tab) relative to a truncation of
+32 (called T31, resolving wavenumbers 0 to 31), the actual time step is then in `Δt` (in seconds) and `Δt_millisec`, scaled linearly from T32 to whatever resolution you chose.
 You can provide any `Second`, `Minute`, `Hour` (but note that there is a stability limit above which your simulation quickly blows up).
 But do not forget to also pass this component to the model constructor, i.e.
 
@@ -118,7 +119,7 @@ where `; time_stepping` matches a keyword argument `time_stepping` with the vari
 to `, time_stepping=time_stepping`.
 
 
-- How large a time step can you choose for a T31 resolution?
+- How large a time step can you choose for a T31 resolution (`truncation=32`)?
 - How does the speed or simulation time change with a changed time step?
 
 Bonus question
@@ -138,7 +139,7 @@ You can change this start time when the model is initialized, i.e.
 
 ```@example instructions
 simulation = initialize!(model, time=DateTime(2000, 8, 1))
-simulation.prognostic_variables.clock
+simulation.variables.prognostic.clock
 ```
 
 With the last line you can inspect the `clock` object that keeps track of time.
@@ -259,7 +260,7 @@ simulation = initialize!(model)
 set!(model, land_sea_mask=0)    # all ocean!
 set!(simulation, sea_surface_temperature=(λ, φ) -> (30 < φ < 60) && (270 < λ < 360) ? 2 : 0, add=true)
 
-sst = simulation.prognostic_variables.ocean.sea_surface_temperature
+sst = simulation.variables.prognostic.ocean.sea_surface_temperature
 heatmap(sst, title="SST with +2K in North Atlantic")
 save("sst_2K.png", ans) # hide
 nothing # hide

@@ -3,7 +3,7 @@ description = "Aqua-planet simulation with a mountain"
 
 using SpeedyWeather, RainMaker
 
-spectral_grid = SpectralGrid(trunc=31, nlayers=10)
+spectral_grid = SpectralGrid(truncation=32, nlayers=10)
 model = PrimitiveWetModel(spectral_grid)
 
 # Set up aqauaplanet but add large mountain in "North Sea" after initialization!

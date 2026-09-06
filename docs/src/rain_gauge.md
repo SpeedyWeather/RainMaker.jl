@@ -30,9 +30,23 @@ to reset the counter, time and all rainfall measurements.
 But a `RainGauge` is also mutable, meaning you can do
 this by hand too, e.g. `rain_gauge.accumulated_rain_large_scale .= 0`.
 
-`RainGauge` has two vectors `accumulated_rain_large_scale` and
-`accumulated_rain_convection` where every entry is one measurement
-of the given precipitation type at the specified location.
+`RainGauge` has four vectors `accumulated_rain_large_scale`,
+`accumulated_rain_convection`, `accumulated_snow_large_scale` and
+`accumulated_snow_convection` where every entry is one measurement
+of the given precipitation type at the specified location. SpeedyWeather
+distinguishes rain from snow in both its large-scale condensation and its
+convection, so the four vectors are the combinations of the two schemes
+with the two phases. Snow is measured as liquid water equivalent so that
+`maximum_precipitation(rain_gauge)`, the total precipitation, is simply
+the sum of the four.
+
+Each of the four is read out independently and falls back to zero if the
+model does not define it. So a `RainGauge` also works in setups where a
+given precipitation type never occurs, e.g. a model without convection,
+or a SpeedyWeather version that does not diagnose convective snow yet --
+in those cases the corresponding vector just stays zero rather than
+erroring.
+
 One measurement is taken after every time step of the model simulation.
 In order to preallocate these vectors we use `max_measurements`
 as length, meaning those are the maximum number of measurements
@@ -196,14 +210,14 @@ beginning of the simulation to better understand regional rainfall patterns.
 SpeedyWeather uses largely SI units internally, but `RainGauge` converts
 meters to millimeters because that is the more common unit for rainfall.
 If we read out SpeedyWeather's fields manually we therefore have to do
-this conversion manually too. Total precipitation is the sum of convective
-and large-scale precipitation which we can calculate and visualise like this
+this conversion manually too. Total precipitation is the sum of large-scale and
+convective rain and snow which we can calculate and visualise like this
 
 ```@example rain_gauge
 # (; a, b) = struct unpacks the fields a, b in struct identified by name, equivalent to
 # a = struct.a and b = struct.b
-(; precip_large_scale, precip_convection) = simulation.diagnostic_variables.physics
-total_precipitation = precip_large_scale + precip_convection
+(; rain_large_scale, rain_convection, snow_large_scale, snow_convection) = simulation.variables.parameterizations
+total_precipitation = rain_large_scale + rain_convection + snow_large_scale + snow_convection
 total_precipitation *= 1000    # convert m to mm
 
 using CairoMakie
@@ -218,8 +232,10 @@ the model is initialized with `simulation = initialize!(model)` which constructs
 variables, initialized with zeros, too. This means the accumulation will
 continue across several `run!` calls unless you manually set it back via
 ```@example rain_gauge
-simulation.diagnostic_variables.physics.precip_large_scale .= 0
-simulation.diagnostic_variables.physics.precip_convection .= 0
+simulation.variables.parameterizations.rain_large_scale .= 0
+simulation.variables.parameterizations.rain_convection .= 0
+simulation.variables.parameterizations.snow_large_scale .= 0
+simulation.variables.parameterizations.snow_convection .= 0
 nothing # hide
 ```
 The `.` here is important to specify the broadcasting of the scalar `0` on the right
